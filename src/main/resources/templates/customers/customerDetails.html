@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'customers')}">
+
+<body>
+
+
+<h2>Customer Information</h2>
+
+
+<table class="table table-striped" th:object="${customer}">
+    <tr>
+        <th>Name</th>
+        <td><b th:text="*{customerName}"></b></td>
+
+    </tr>
+    <tr>
+        <th>Registered On</th>
+       <td th:text="*{createdDate}" /></td>
+     <!--<td th:text="${#dates.format(*{createdDate}, 'dd-MMM-yyyy')}" /></td>-->
+
+    </tr>
+
+</table>
+
+<a th:href="@{{id}/edit(id=${customer.id})}" class="btn btn-default">Edit
+    Customer</a>
+
+</body>
+
+</html>

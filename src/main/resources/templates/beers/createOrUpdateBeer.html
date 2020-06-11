@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'beers')}">
+
+<body>
+
+<h2>
+    <th:block th:if="${beer['new']}">New Beer</th:block>
+    Update Beer
+</h2>
+    <form th:object="${beer}" class="form-horizontal" id="add-beer-form" method="post">
+    <div class="form-group has-feedback">
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{createdDate}" />
+        <input type="hidden" th:field="*{version}" />
+        <input
+                th:replace="~{fragments/inputField :: input ('Beer Name', 'beerName', 'text')}" />
+        <input
+                th:replace="~{fragments/selectField :: select ('Style', 'beerStyle', ${T(guru.sfg.brewery.web.model.BeerStyleEnum).values()})}" />
+        <input
+                th:replace="~{fragments/inputField :: input ('UPC', 'upc', 'number')}" />
+        <input
+                th:replace="~{fragments/inputField :: input ('Min Qty on Hand', 'minOnHand', 'number')}" />
+        <input
+                th:replace="~{fragments/inputField :: input ('Qty to Brew', 'quantityToBrew', 'number')}" />
+        <input
+                th:replace="~{fragments/inputField :: input ('Price', 'price', 'monetory')}" />
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button
+                    th:with="text=${beer['new']} ? 'Add Beer' : 'Update Beer'"
+                    class="btn btn-default" type="submit" th:text="${text}">Add
+                Beer</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

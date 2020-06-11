@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'beers')}">
+
+<body>
+
+<h2>Owners</h2>
+
+<table id="vets" class="table table-striped">
+    <thead>
+    <tr>
+        <th style="width: 150px;">Name</th>
+        <th style="width: 200px;">Style</th>
+        <th>Price</th>
+        <th style="width: 120px">Min on Hand</th>
+        <th style="width: 120px">Quantity to Brew</th>
+        <th>Inventory Quantity on Hand</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="beer : ${selections}">
+        <td>
+            <a th:href="@{/beers/__${beer.id}__}" th:text="${beer.beerName}"/></a>
+        </td>
+        <td th:text="${beer.beerStyle}"/>
+        <td th:text="${beer.price}"/>
+        <td th:text="${beer.minOnHand}"/>
+        <td th:text="${beer.quantityToBrew}"/>
+        <td><span th:each="beerInventory : ${beer.beerInventory}" th:text="${beerInventory.quantityOnHand} "/></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

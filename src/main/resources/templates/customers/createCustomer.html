@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'customers')}">
+
+<body>
+
+<h2>
+    <th:block th:if="${customer['new']}">New Customer</th:block>
+    Update Customer
+</h2>
+<form th:object="${customer}" class="form-horizontal" id="add-customer-form" method="post">
+    <div class="form-group has-feedback">
+
+        <input
+                th:replace="~{fragments/inputField :: input ('Customer Name', 'customerName', 'text')}" />
+
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button
+                    th:with="text=${customer['new']} ? 'Add Customer' : 'Update Customer'"
+                    class="btn btn-default" type="submit" th:text="${text}">Add
+                Customer</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

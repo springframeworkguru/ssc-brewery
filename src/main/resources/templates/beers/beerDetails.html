@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'beers')}">
+
+<body>
+
+
+<h2>Beer Information</h2>
+
+
+<table class="table table-striped" th:object="${beer}">
+    <tr>
+        <th>Name</th>
+        <td><b th:text="*{beerName}"></b></td>
+    </tr>
+    <tr>
+        <th>Style</th>
+        <td th:text="*{beerStyle}" /></td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td th:text="*{price}" /></td>
+    </tr>
+    <tr>
+        <th>Min on Hand</th>
+        <td th:text="*{minOnHand}" /></td>
+    </tr>
+    <tr>
+        <th>Quantity to Brew</th>
+        <td th:text="*{quantityToBrew}" /></td>
+    </tr>
+</table>
+
+<a th:href="@{{id}/edit(id=${beer.id})}" class="btn btn-default">Edit
+    Beer</a>
+<!--<a th:href="@{{id}/pets/new(id=${beer.id})}" class="btn btn-default">Delete-->
+    <!--Beer</a>-->
+
+<br />
+<br />
+<br />
+<h2>Beer Inventory</h2>
+
+<table class="table table-striped">
+
+    <tr th:each="beerInventory : ${beer.beerInventory}">
+        <td valign="top">
+            <dl class="dl-horizontal">
+                <dt>Quantity on Hand</dt>
+                <dd th:text="${beerInventory.quantityOnHand}" /></dd>
+            </dl>
+    </tr>
+</table>
+
+</body>
+
+</html>

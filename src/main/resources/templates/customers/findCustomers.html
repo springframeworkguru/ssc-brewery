@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'customers')}">
+
+<body>
+
+<h2>Find Customers</h2>
+
+<form th:object="${customer}" th:action="@{/customers}" method="get"
+      class="form-horizontal" id="search-owner-form">
+    <divmvn clean package class="form-group">
+        <div class="control-group" id="lastNameGroup">
+            <label class="col-sm-2 control-label">Customer name </label>
+            <div class="col-sm-10">
+                <input class="form-control" th:field="*{customerName}" size="30"
+                       maxlength="80" /> <span class="help-inline"><div
+                    th:if="${#fields.hasAnyErrors()}">
+              <p th:each="err : ${#fields.allErrors()}" th:text="${err}">Error</p>
+            </div></span>
+            </div>
+        </div>
+    </divmvn>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Find
+                Customer</button>
+        </div>
+    </div>
+
+</form>
+
+<br />
+<a class="btn btn-default" th:href="@{/customers/new}">Register Customer</a>
+
+</body>
+</html>
