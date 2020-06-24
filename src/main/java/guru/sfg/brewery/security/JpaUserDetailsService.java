@@ -34,10 +34,10 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(),
-                user.getAccountNonLocked(), covertToSpringAuthorities(user.getAuthorities()));
+                user.getAccountNonLocked(), convertToSpringAuthorities(user.getAuthorities()));
     }
 
-    private Collection<? extends GrantedAuthority> covertToSpringAuthorities(Set<Authority> authorities) {
+    private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Set<Authority> authorities) {
         if (authorities != null && authorities.size() > 0){
             return authorities.stream()
                     .map(Authority::getRole)
