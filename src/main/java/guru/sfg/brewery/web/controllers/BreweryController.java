@@ -41,9 +41,9 @@ public class BreweryController {
         model.addAttribute("breweries", breweryService.getAllBreweries());
         return "breweries/index";
     }
+
     @GetMapping("/api/v1/breweries")
-    public @ResponseBody
-    List<Brewery> getBreweriesJson(){
+    public @ResponseBody List<Brewery> getBreweriesJson(){
         return breweryService.getAllBreweries();
     }
 }
