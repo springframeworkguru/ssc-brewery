@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,12 +49,14 @@ public class BeerController {
     private final BeerInventoryRepository beerInventoryRepository;
 
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @RequestMapping("/find")
     public String findBeers(Model model) {
         model.addAttribute("beer", Beer.builder().build());
         return "beers/findBeers";
     }
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @GetMapping
     public String processFindFormReturnMany(Beer beer, BindingResult result, Model model) {
         // find beers by name
@@ -77,6 +80,7 @@ public class BeerController {
     }
 
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @GetMapping("/{beerId}")
     public ModelAndView showBeer(@PathVariable UUID beerId) {
         ModelAndView mav = new ModelAndView("beers/beerDetails");
@@ -85,12 +89,14 @@ public class BeerController {
         return mav;
     }
 
+    @PreAuthorize("hasAuthority('beer.create')")
     @GetMapping("/new")
     public String initCreationForm(Model model) {
         model.addAttribute("beer", Beer.builder().build());
         return "beers/createBeer";
     }
 
+    @PreAuthorize("hasAuthority('beer.create')")
     @PostMapping("/new")
     public String processCreationForm(Beer beer) {
         //ToDO: Add Service
@@ -107,6 +113,7 @@ public class BeerController {
         return "redirect:/beers/" + savedBeer.getId();
     }
 
+    @PreAuthorize("hasAuthority('beer.update')")
     @GetMapping("/{beerId}/edit")
     public String initUpdateBeerForm(@PathVariable UUID beerId, Model model) {
         if (beerRepository.findById(beerId).isPresent())
@@ -114,6 +121,7 @@ public class BeerController {
         return "beers/createOrUpdateBeer";
     }
 
+    @PreAuthorize("hasAuthority('beer.update')")
     @PostMapping("/{beerId}/edit")
     public String processUpdateForm(@Valid Beer beer, BindingResult result) {
         if (result.hasErrors()) {
