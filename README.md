@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/sfg-beer-works/brewery-monolith.svg?style=svg)](https://circleci.com/gh/sfg-beer-works/brewery-monolith)
 # Brewery Spring MVC Monolith
 
 This repository contains source code examples used to support my on-line courses about the Spring Framework.
