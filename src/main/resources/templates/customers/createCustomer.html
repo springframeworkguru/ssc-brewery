@@ -10,9 +10,9 @@
 <form th:object="${customer}" class="form-horizontal" id="add-customer-form" method="post">
     <div class="form-group has-feedback">
 
-        <input
-                th:replace="~{fragments/inputField :: input ('Customer Name', 'customerName', 'text')}" />
+        <input th:replace="~{fragments/inputField :: input ('Customer Name', 'customerName', 'text')}" />
 
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
