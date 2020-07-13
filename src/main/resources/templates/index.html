@@ -29,7 +29,8 @@
 
 <div class="row" sec:authorize="!isAuthenticated()">
     <div class="col-md-12">
-        <p th:if="${loginError}" class="error">Wrong Username or password</p>
+        <div th:if="${param.error}" class="alert alert-danger">Invalid Username or Password</div>
+        <div th:if="${param.logout}" class="alert alert-success">You Have Logged Out</div>
         <form th:action="@{/login}" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" autofocus="true" autocomplete="off">
