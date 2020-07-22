@@ -62,7 +62,8 @@ public class BeerControllerIT extends AbstractBaseIT {
     private static @NotNull Stream<Arguments> usersAndPasswords() {
         return Stream.of(
                 Arguments.of("spring", "secret"),
-                Arguments.of("user", "password")
+                Arguments.of("user", "password"),
+                Arguments.of("scott", "tiger")
         );
     }
 
