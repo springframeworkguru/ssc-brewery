@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    public static final String[] PUBLIC_URLS = {"/", "/login", "/beers/find", "/beers*", "/webjars/**", "/resources/**"};
+
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorize ->
-                        authorize.antMatchers("/", "/login", "/webjars/**", "/resources/**").permitAll())
+                        authorize.antMatchers(PUBLIC_URLS).permitAll())
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
