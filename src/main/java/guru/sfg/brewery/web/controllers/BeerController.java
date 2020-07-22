@@ -17,7 +17,6 @@
 
 package guru.sfg.brewery.web.controllers;
 
-
 import guru.sfg.brewery.domain.Beer;
 import guru.sfg.brewery.repositories.BeerInventoryRepository;
 import guru.sfg.brewery.repositories.BeerRepository;
@@ -38,7 +37,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-
 @RequiredArgsConstructor
 @RequestMapping("/beers")
 @Controller
@@ -46,7 +44,6 @@ public class BeerController {
 
     private final BeerRepository beerRepository;
     private final BeerInventoryRepository beerInventoryRepository;
-
 
     @RequestMapping("/find")
     public String findBeers(Model model) {
