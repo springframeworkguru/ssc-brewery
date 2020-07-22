@@ -1,7 +1,17 @@
 # Brewery Spring MVC Monolith
 
 [![cookieMr](https://circleci.com/gh/cookieMr/ssc-brewery.svg?style=svg)](https://circleci.com/gh/cookieMr/ssc-brewery)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=alert_status)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=security_rating)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
 
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=bugs)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=code_smells)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=sqale_index)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=ncloc)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=cookieMr_ssc-brewery&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=cookieMr_ssc-brewery)
 
 This is my implementation of an Udemy  
 [Spring Security Core](https://www.udemy.com/course/spring-security-core-beginner-to-guru/?referralCode=306F288EB78688C0F3BC)
