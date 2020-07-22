@@ -1,5 +1,14 @@
 # Brewery Spring MVC Monolith
 
+[![cookieMr](https://circleci.com/gh/cookieMr/ssc-brewery.svg?style=svg)](https://circleci.com/gh/cookieMr/ssc-brewery)
+
+
+This is my implementation of an Udemy  
+[Spring Security Core](https://www.udemy.com/course/spring-security-core-beginner-to-guru/?referralCode=306F288EB78688C0F3BC)
+course.
+
+### Original Readme
+
 This repository contains source code examples used to support my on-line courses about the Spring Framework.
 
 You can learn more about the courses here:
