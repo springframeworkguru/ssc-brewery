@@ -2,12 +2,15 @@ package guru.sfg.brewery.config;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +25,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     String adminUserName;
     @Value("${spring.security.user.password:}")
     String adminPassword;
+
+    @Bean
+    public @NotNull PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
@@ -38,18 +46,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser(adminUserName)
                 .password("{noop}" + adminPassword)
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{noop}password")
+                .password("{bcrypt}$2a$13$ITY1oZe1aqaLcf6mzB3a.ujQTEuS0dKs7ZXyF3NJn/vcb48oOx32m")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{noop}tiger")
+                .password("{ldap}{SSHA}o7Tlxi8m1Pxtz4/Sw2I4qfJKL0RNXShvQL6JVw==")
                 .roles("CUSTOMER");
     }
 
