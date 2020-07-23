@@ -2,6 +2,7 @@ package guru.sfg.brewery.config;
 
 import guru.sfg.brewery.security.BreweryPasswordEncoderFactories;
 import guru.sfg.brewery.security.RestHeaderAuthenticationFilter;
+import guru.sfg.brewery.security.RestUriParameterAuthenticationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return BreweryPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    public @NotNull RestHeaderAuthenticationFilter restHeaderAuthenticationFilter(@NotNull AuthenticationManager manager) {
-        RestHeaderAuthenticationFilter filter = new RestHeaderAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
+    private @NotNull RestHeaderAuthenticationFilter restHeaderAuthenticationFilter(
+            @NotNull AuthenticationManager manager) {
+        RestHeaderAuthenticationFilter filter =
+                new RestHeaderAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
+        filter.setAuthenticationManager(manager);
+        return filter;
+    }
+
+    private @NotNull RestUriParameterAuthenticationFilter restPathAttributeAuthenticationFilter(
+            @NotNull AuthenticationManager manager) {
+        RestUriParameterAuthenticationFilter filter =
+                new RestUriParameterAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(manager);
         return filter;
     }
@@ -45,6 +56,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(@NotNull HttpSecurity http) throws Exception {
         http.addFilterBefore(restHeaderAuthenticationFilter(authenticationManager()),
                 UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(restPathAttributeAuthenticationFilter(authenticationManager()),
+                        UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
 
                 .authorizeRequests(authorize ->
