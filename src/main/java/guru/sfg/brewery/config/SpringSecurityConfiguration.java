@@ -1,5 +1,6 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.BreweryPasswordEncoderFactories;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -28,7 +28,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public @NotNull PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return BreweryPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{ldap}{SSHA}o7Tlxi8m1Pxtz4/Sw2I4qfJKL0RNXShvQL6JVw==")
+                .password("{bcrypt15}$2a$15$KFcrLSEK0eLOXCro8vi2P.HWlTwl.VJgQHmFsQd8qbRfTsdmf6goC")
                 .roles("CUSTOMER");
     }
 
