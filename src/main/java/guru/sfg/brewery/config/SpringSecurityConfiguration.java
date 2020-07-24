@@ -54,15 +54,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
-        http.addFilterBefore(restHeaderAuthenticationFilter(authenticationManager()),
-                UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(restPathAttributeAuthenticationFilter(authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
+        http
+
+                // TODO: figure out why this blocks logging into H@ console?
+                // .addFilterBefore(restHeaderAuthenticationFilter(authenticationManager()),
+                // UsernamePasswordAuthenticationFilter.class)
+                // .addFilterBefore(restPathAttributeAuthenticationFilter(authenticationManager()),
+                //         UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
 
                 .authorizeRequests(authorize ->
-                        authorize.antMatchers(PUBLIC_ANT_URLS).permitAll()
-                                .antMatchers("/h2-console/**").permitAll()
+                        authorize.antMatchers("/h2-console/**").permitAll() //do not use in production!
+                                .antMatchers(PUBLIC_ANT_URLS).permitAll()
                                 .antMatchers(HttpMethod.GET, PUBLIC_ANT_GET_URLS).permitAll()
                                 .mvcMatchers(HttpMethod.GET, PUBLIC_MVC_GET_URLS).permitAll())
                 .authorizeRequests()
