@@ -62,13 +62,17 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests(authorize ->
                         authorize.antMatchers(PUBLIC_ANT_URLS).permitAll()
+                                .antMatchers("/h2-console/**").permitAll()
                                 .antMatchers(HttpMethod.GET, PUBLIC_ANT_GET_URLS).permitAll()
                                 .mvcMatchers(HttpMethod.GET, PUBLIC_MVC_GET_URLS).permitAll())
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().and()
-                .httpBasic();
+                .formLogin()
+                .and()
+                .httpBasic()
+                .and()
+                .headers().frameOptions().sameOrigin();
     }
 
     @Override

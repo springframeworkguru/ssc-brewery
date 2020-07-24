@@ -62,7 +62,7 @@ public abstract class AbstractRestAuthenticationFilter extends AbstractAuthentic
         String password = getPassword(request);
 
         if (log.isDebugEnabled()) {
-            log.debug("Authenticating:" + username);
+            log.debug("Authenticating [{}]", username);
         }
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
