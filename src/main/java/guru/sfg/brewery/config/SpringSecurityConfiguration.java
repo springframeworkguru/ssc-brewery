@@ -16,8 +16,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_ANT_URLS =
             {"/", "/login", "/beers/find", "/beers*", "/webjars/**", "/resources/**"};
-    public static final String[] PUBLIC_ANT_GET_URLS = {"/api/v1/beer/**"};
-    public static final String[] PUBLIC_MVC_GET_URLS = {"/api/v1/beerUpc/{upc}"};
+    public static final String[] PUBLIC_BEER_URLS = {"/api/v1/beer/**"};
+    public static final String[] PUBLIC_BEER_UPC_URLS = {"/api/v1/beerUpc/{upc}"};
 
     @Bean
     public @NotNull PasswordEncoder passwordEncoder() {
@@ -30,8 +30,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorize ->
                         authorize.antMatchers("/h2-console/**").permitAll() //do not use in production!
                                 .antMatchers(PUBLIC_ANT_URLS).permitAll()
-                                .antMatchers(HttpMethod.GET, PUBLIC_ANT_GET_URLS).permitAll()
-                                .mvcMatchers(HttpMethod.GET, PUBLIC_MVC_GET_URLS).permitAll())
+                                .antMatchers(HttpMethod.GET, PUBLIC_BEER_URLS).permitAll()
+                                .mvcMatchers(HttpMethod.DELETE, PUBLIC_BEER_URLS).hasAnyRole("ADMIN")
+                                .mvcMatchers(HttpMethod.GET, PUBLIC_BEER_UPC_URLS).permitAll())
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()

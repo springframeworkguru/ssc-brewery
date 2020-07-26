@@ -18,9 +18,9 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 public abstract class AbstractBaseIT {
 
     @Value("${spring.security.user.name:}")
-    String user;
+    String adminUser;
     @Value("${spring.security.user.password:}")
-    String password;
+    String adminPassword;
 
     @Autowired
     WebApplicationContext wac;

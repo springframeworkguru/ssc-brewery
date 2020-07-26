@@ -36,7 +36,7 @@ public class IndexControllerIT extends AbstractBaseIT {
     @ParameterizedTest
     @MethodSource("publicUrls")
     void getPublicUrlWithHttpBasicAuth(@NotNull String url) throws Exception {
-        mockMvc.perform(get(url).with(httpBasic(user, password)))
+        mockMvc.perform(get(url).with(httpBasic(adminUser, adminPassword)))
                 .andExpect(status().isOk());
     }
 

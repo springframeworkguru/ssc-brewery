@@ -52,31 +52,22 @@ public class BeerRestControllerIT extends AbstractBaseIT {
     }
 
     @Test
-    void deleteBeerWithLegacyHeaderAuthenticationWithWrongCredentials() throws Exception {
+    void deleteBeerWithCustomerRoleIsForbidden() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .header("api-key", user)
-                .header("api-secret", "some other secret"))
-                .andExpect(status().isUnauthorized());
+                .with(httpBasic("scott", "tiger")))
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    void deleteBeerWithHttpBasicAuth() throws Exception {
+    void deleteBeerWithUserRoleIsForbidden() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .with(httpBasic(user, password)))
-                .andExpect(status().is2xxSuccessful());
+                .with(httpBasic("user", "password")))
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void deleteBeerWithNoAuthFails() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void deleteBeerWithLegacyUriParametersAuthenticationWithWrongCredentials() throws Exception {
-        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .param("user", user)
-                .param("password", "bad password"))
                 .andExpect(status().isUnauthorized());
     }
 
