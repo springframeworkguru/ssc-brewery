@@ -1,8 +1,7 @@
 package guru.sfg.brewery.web.controllers;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -10,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@SpringBootTest
 public class BeerRestControllerIT extends AbstractBaseIT {
 
     @Test
@@ -53,15 +52,6 @@ public class BeerRestControllerIT extends AbstractBaseIT {
     }
 
     @Test
-    @Disabled("custom auth blocks logging into H@ console, need to fix")
-    void deleteBeerWithLegacyHeaderAuthentication() throws Exception {
-        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .header("api-key", user)
-                .header("api-secret", password))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void deleteBeerWithLegacyHeaderAuthenticationWithWrongCredentials() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
                 .header("api-key", user)
@@ -80,15 +70,6 @@ public class BeerRestControllerIT extends AbstractBaseIT {
     void deleteBeerWithNoAuthFails() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311"))
                 .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @Disabled("custom auth blocks logging into H@ console, need to fix")
-    void deleteBeerWithLegacyUriParameterAuthentication() throws Exception {
-        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .param("user", user)
-                .param("password", password))
-                .andExpect(status().isOk());
     }
 
     @Test

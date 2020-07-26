@@ -11,6 +11,7 @@ import java.util.Map;
 public class BreweryPasswordEncoderFactories {
 
     private BreweryPasswordEncoderFactories() {
+        throw new AssertionError("BreweryPasswordEncoderFactories should never be instantiated.");
     }
 
     public static @NotNull PasswordEncoder createDelegatingPasswordEncoder() {
@@ -19,6 +20,7 @@ public class BreweryPasswordEncoderFactories {
         encoders.put(encodingId, new BCryptPasswordEncoder());
         encoders.put("ldap", new org.springframework.security.crypto.password.LdapShaPasswordEncoder());
         encoders.put("noop", org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
+        encoders.put(null, org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
         encoders.put("sha256", new org.springframework.security.crypto.password.StandardPasswordEncoder());
         encoders.put("bcrypt15", new BCryptPasswordEncoder(15));
 
