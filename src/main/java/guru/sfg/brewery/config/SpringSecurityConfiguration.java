@@ -19,6 +19,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public static final String[] PUBLIC_BEER_URLS = {"/api/v1/beer/**"};
     public static final String[] PUBLIC_BEER_UPC_URLS = {"/api/v1/beerUpc/{upc}"};
 
+    public static final String[] PUBLIC_BREWERIES_URLS = {"/brewery/api/v1/breweries", "/brewery/breweries"};
+
     @Bean
     public @NotNull PasswordEncoder passwordEncoder() {
         return BreweryPasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -32,6 +34,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .antMatchers(PUBLIC_ANT_URLS).permitAll()
                                 .antMatchers(HttpMethod.GET, PUBLIC_BEER_URLS).permitAll()
                                 .mvcMatchers(HttpMethod.DELETE, PUBLIC_BEER_URLS).hasAnyRole("ADMIN")
+                                .mvcMatchers(HttpMethod.GET, PUBLIC_BREWERIES_URLS).hasAnyRole("ADMIN", "CUSTOMER")
                                 .mvcMatchers(HttpMethod.GET, PUBLIC_BEER_UPC_URLS).permitAll())
                 .authorizeRequests()
                 .anyRequest().authenticated()
