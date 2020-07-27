@@ -3,6 +3,7 @@ package guru.sfg.brewery.web.controllers;
 import guru.sfg.brewery.repositories.BeerInventoryRepository;
 import guru.sfg.brewery.repositories.BeerRepository;
 import guru.sfg.brewery.repositories.CustomerRepository;
+import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.services.BeerService;
 import guru.sfg.brewery.services.BreweryService;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,9 @@ public class IndexControllerIT extends AbstractBaseIT {
 
     @MockBean
     BeerService beerService;
+
+    @MockBean
+    BeerOrderService beerOrderService;
 
     private static @NotNull Stream<String> publicUrls() {
         return Stream.of("/", "/login", "/beers/find");

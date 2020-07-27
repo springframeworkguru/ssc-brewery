@@ -27,6 +27,8 @@ import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +49,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     private final BeerOrderMapper beerOrderMapper;
 
     @Override
-    public BeerOrderPagedList listOrders(UUID customerId, Pageable pageable) {
+    public @Nullable BeerOrderPagedList listOrders(@NotNull UUID customerId, @NotNull Pageable pageable) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
         if (customerOptional.isPresent()) {
@@ -68,7 +70,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
 
     @Transactional
     @Override
-    public BeerOrderDto placeOrder(UUID customerId, BeerOrderDto beerOrderDto) {
+    public @Nullable BeerOrderDto placeOrder(@NotNull UUID customerId, @Nullable BeerOrderDto beerOrderDto) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
         if (customerOptional.isPresent()) {
@@ -90,29 +92,31 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     }
 
     @Override
-    public BeerOrderDto getOrderById(UUID customerId, UUID orderId) {
-        return beerOrderMapper.beerOrderToDto(getOrder(customerId, orderId));
+    public @NotNull BeerOrderDto getOrderById(@NotNull UUID customerId, @NotNull UUID orderId) {
+        return Optional.of(getOrder(customerId, orderId))
+                .map(beerOrderMapper::beerOrderToDto)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
-    public void pickupOrder(UUID customerId, UUID orderId) {
+    public void pickupOrder(@NotNull UUID customerId, @NotNull UUID orderId) {
         BeerOrder beerOrder = getOrder(customerId, orderId);
         beerOrder.setOrderStatus(OrderStatusEnum.PICKED_UP);
 
         beerOrderRepository.save(beerOrder);
     }
 
-    private BeerOrder getOrder(UUID customerId, UUID orderId){
+    private @NotNull BeerOrder getOrder(@NotNull UUID customerId, @NotNull UUID orderId) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
-        if(customerOptional.isPresent()){
+        if (customerOptional.isPresent()) {
             Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(orderId);
 
-            if(beerOrderOptional.isPresent()){
+            if (beerOrderOptional.isPresent()) {
                 BeerOrder beerOrder = beerOrderOptional.get();
 
                 // fall to exception if customer id's do not match - order not for customer
-                if(beerOrder.getCustomer().getId().equals(customerId)){
+                if (beerOrder.getCustomer().getId().equals(customerId)) {
                     return beerOrder;
                 }
             }

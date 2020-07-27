@@ -20,16 +20,20 @@ package guru.sfg.brewery.services;
 
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
 public interface BeerOrderService {
-    BeerOrderPagedList listOrders(UUID customerId, Pageable pageable);
 
-    BeerOrderDto placeOrder(UUID customerId, BeerOrderDto beerOrderDto);
+    @Nullable BeerOrderPagedList listOrders(@NotNull UUID customerId, @NotNull Pageable pageable);
 
-    BeerOrderDto getOrderById(UUID customerId, UUID orderId);
+    @Nullable BeerOrderDto placeOrder(@NotNull UUID customerId, @Nullable BeerOrderDto beerOrderDto);
 
-    void pickupOrder(UUID customerId, UUID orderId);
+    @NotNull BeerOrderDto getOrderById(@NotNull UUID customerId, @NotNull UUID orderId);
+
+    void pickupOrder(@NotNull UUID customerId, @NotNull UUID orderId);
+
 }
