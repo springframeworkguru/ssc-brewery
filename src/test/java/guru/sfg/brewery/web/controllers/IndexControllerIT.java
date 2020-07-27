@@ -1,9 +1,15 @@
 package guru.sfg.brewery.web.controllers;
 
+import guru.sfg.brewery.repositories.BeerInventoryRepository;
+import guru.sfg.brewery.repositories.BeerRepository;
+import guru.sfg.brewery.repositories.CustomerRepository;
+import guru.sfg.brewery.services.BeerService;
+import guru.sfg.brewery.services.BreweryService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.stream.Stream;
 
@@ -14,6 +20,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 public class IndexControllerIT extends AbstractBaseIT {
+
+    @MockBean
+    BeerRepository beerRepository;
+
+    @MockBean
+    BeerInventoryRepository beerInventoryRepository;
+
+    @MockBean
+    BreweryService breweryService;
+
+    @MockBean
+    CustomerRepository customerRepository;
+
+    @MockBean
+    BeerService beerService;
 
     private static @NotNull Stream<String> publicUrls() {
         return Stream.of("/", "/login", "/beers/find");
