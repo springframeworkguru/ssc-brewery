@@ -1,5 +1,8 @@
 package guru.sfg.brewery.web.controllers.api;
 
+import guru.sfg.brewery.security.perms.PreAuthorizeBeerOrderCreate;
+import guru.sfg.brewery.security.perms.PreAuthorizeBeerOrderRead;
+import guru.sfg.brewery.security.perms.PreAuthorizeOrderPickup;
 import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
@@ -30,9 +33,10 @@ public class BeerOrderController {
 
     private final BeerOrderService beerOrderService;
 
+    @PreAuthorizeBeerOrderRead
     @GetMapping("orders")
     public @Nullable BeerOrderPagedList listOrders(
-            @NotNull @PathVariable("customerId") UUID customerID,
+            @NotNull @PathVariable("customerId") UUID customerId,
             @Nullable @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
             @Nullable @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNumber == null || pageNumber < 0) {
@@ -43,30 +47,33 @@ public class BeerOrderController {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        return beerOrderService.listOrders(customerID, PageRequest.of(pageNumber, pageSize));
+        return beerOrderService.listOrders(customerId, PageRequest.of(pageNumber, pageSize));
     }
 
-    @PostMapping("orders")
+    @PreAuthorizeBeerOrderCreate
     @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("orders")
     public BeerOrderDto placeOrder(
-            @NotNull @PathVariable("customerId") UUID customerID,
+            @NotNull @PathVariable("customerId") UUID customerId,
             @Nullable @RequestBody BeerOrderDto beerOrderDto) {
-        return beerOrderService.placeOrder(customerID, beerOrderDto);
+        return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    @PreAuthorizeBeerOrderRead
     @GetMapping("orders/{orderId}")
     public @NotNull BeerOrderDto getOrders(
-            @NotNull @PathVariable("customerId") UUID customerID,
+            @Nullable @PathVariable("customerId") UUID customerId,
             @NotNull @PathVariable("orderId") UUID orderId) {
-        return beerOrderService.getOrderById(customerID, orderId);
+        return beerOrderService.getOrderById(customerId, orderId);
     }
 
+    @PreAuthorizeOrderPickup
     @PutMapping("orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void pickupOrder(
-            @NotNull @PathVariable("customerId") UUID customerID,
+            @NotNull @PathVariable("customerId") UUID customerId,
             @NotNull @PathVariable("orderId") UUID orderId) {
-        beerOrderService.pickupOrder(customerID, orderId);
+        beerOrderService.pickupOrder(customerId, orderId);
     }
 
 }

@@ -63,9 +63,8 @@ public class BeerOrderServiceImpl implements BeerOrderService {
                     beerOrderPage.getPageable().getPageNumber(),
                     beerOrderPage.getPageable().getPageSize()),
                     beerOrderPage.getTotalElements());
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Transactional
@@ -92,7 +91,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     }
 
     @Override
-    public @NotNull BeerOrderDto getOrderById(@NotNull UUID customerId, @NotNull UUID orderId) {
+    public @NotNull BeerOrderDto getOrderById(@Nullable UUID customerId, @NotNull UUID orderId) {
         return Optional.of(getOrder(customerId, orderId))
                 .map(beerOrderMapper::beerOrderToDto)
                 .orElseThrow(IllegalArgumentException::new);
@@ -106,22 +105,27 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         beerOrderRepository.save(beerOrder);
     }
 
-    private @NotNull BeerOrder getOrder(@NotNull UUID customerId, @NotNull UUID orderId) {
+    private @NotNull BeerOrder getOrder(@Nullable UUID customerId, @NotNull UUID orderId) {
+        if (customerId == null) {
+            throw new RuntimeException("Customer Cannot Be Found");
+        }
+
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
-        if (customerOptional.isPresent()) {
-            Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(orderId);
-
-            if (beerOrderOptional.isPresent()) {
-                BeerOrder beerOrder = beerOrderOptional.get();
-
-                // fall to exception if customer id's do not match - order not for customer
-                if (beerOrder.getCustomer().getId().equals(customerId)) {
-                    return beerOrder;
-                }
-            }
-            throw new RuntimeException("Beer Order Not Found");
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("Customer Not Found");
         }
-        throw new RuntimeException("Customer Not Found");
+        Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(orderId);
+
+        if (beerOrderOptional.isPresent()) {
+            BeerOrder beerOrder = beerOrderOptional.get();
+
+            // fall to exception if customer id's do not match - order not for customer
+            if (beerOrder.getCustomer().getId().equals(customerId)) {
+                return beerOrder;
+            }
+        }
+        throw new RuntimeException("Beer Order Not Found");
     }
+
 }

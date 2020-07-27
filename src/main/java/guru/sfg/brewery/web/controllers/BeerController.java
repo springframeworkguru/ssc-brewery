@@ -83,7 +83,6 @@ public class BeerController {
         }
     }
 
-
     @PreAuthorizeBeerRead
     @GetMapping("/{beerId}")
     public @NotNull ModelAndView showBeer(@NotNull @PathVariable UUID beerId) {

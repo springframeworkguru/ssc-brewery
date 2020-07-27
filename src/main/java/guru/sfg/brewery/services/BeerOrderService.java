@@ -32,7 +32,7 @@ public interface BeerOrderService {
 
     @Nullable BeerOrderDto placeOrder(@NotNull UUID customerId, @Nullable BeerOrderDto beerOrderDto);
 
-    @NotNull BeerOrderDto getOrderById(@NotNull UUID customerId, @NotNull UUID orderId);
+    @NotNull BeerOrderDto getOrderById(@Nullable UUID customerId, @NotNull UUID orderId);
 
     void pickupOrder(@NotNull UUID customerId, @NotNull UUID orderId);
 
