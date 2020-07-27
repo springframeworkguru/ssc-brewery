@@ -20,6 +20,9 @@ package guru.sfg.brewery.web.controllers;
 import guru.sfg.brewery.domain.Beer;
 import guru.sfg.brewery.repositories.BeerInventoryRepository;
 import guru.sfg.brewery.repositories.BeerRepository;
+import guru.sfg.brewery.security.perms.PreAuthorizeBeerCreate;
+import guru.sfg.brewery.security.perms.PreAuthorizeBeerRead;
+import guru.sfg.brewery.security.perms.PreAuthorizeBeerUpdate;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -81,7 +84,7 @@ public class BeerController {
     }
 
 
-    @PreAuthorize("hasAuthority('beer.read')")
+    @PreAuthorizeBeerRead
     @GetMapping("/{beerId}")
     public @NotNull ModelAndView showBeer(@NotNull @PathVariable UUID beerId) {
         ModelAndView mav = new ModelAndView("beers/beerDetails");
@@ -90,14 +93,14 @@ public class BeerController {
         return mav;
     }
 
-    @PreAuthorize("hasAuthority('beer.create')")
+    @PreAuthorizeBeerCreate
     @GetMapping("/new")
     public @NotNull String initCreationForm(@NotNull Model model) {
         model.addAttribute("beer", Beer.builder().build());
         return "beers/createBeer";
     }
 
-    @PreAuthorize("hasAuthority('beer.create')")
+    @PreAuthorizeBeerCreate
     @PostMapping("/new")
     public @NotNull String processCreationForm(@NotNull Beer beer) {
         //ToDO: Add Service
@@ -114,7 +117,7 @@ public class BeerController {
         return "redirect:/beers/" + savedBeer.getId();
     }
 
-    @PreAuthorize("hasAuthority('beer.update')")
+    @PreAuthorizeBeerUpdate
     @GetMapping("/{beerId}/edit")
     public @NotNull String initUpdateBeerForm(
             @NotNull @PathVariable UUID beerId,
@@ -124,7 +127,7 @@ public class BeerController {
         return "beers/createOrUpdateBeer";
     }
 
-    @PreAuthorize("hasAuthority('beer.update')")
+    @PreAuthorizeBeerUpdate
     @PostMapping("/{beerId}/edit")
     public @NotNull String processUpdateForm(@NotNull @Valid Beer beer, @NotNull BindingResult result) {
         if (result.hasErrors()) {
