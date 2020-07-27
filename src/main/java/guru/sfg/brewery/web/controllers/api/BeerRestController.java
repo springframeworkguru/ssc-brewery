@@ -23,6 +23,8 @@ import guru.sfg.brewery.web.model.BeerPagedList;
 import guru.sfg.brewery.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,13 +49,14 @@ public class BeerRestController {
 
     private final BeerService beerService;
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @GetMapping(produces = {"application/json"}, path = "beer")
-    public ResponseEntity<BeerPagedList> listBeers(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                   @RequestParam(value = "beerName", required = false) String beerName,
-                                                   @RequestParam(value = "beerStyle", required = false) BeerStyleEnum beerStyle,
-                                                   @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand) {
-
+    public @NotNull ResponseEntity<BeerPagedList> listBeers(
+            @Nullable @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+            @Nullable @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @Nullable @RequestParam(value = "beerName", required = false) String beerName,
+            @Nullable @RequestParam(value = "beerStyle", required = false) BeerStyleEnum beerStyle,
+            @Nullable @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand) {
         log.debug("Listing Beers");
 
         if (showInventoryOnHand == null) {
@@ -68,15 +71,17 @@ public class BeerRestController {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        BeerPagedList beerList = beerService.listBeers(beerName, beerStyle, PageRequest.of(pageNumber, pageSize), showInventoryOnHand);
+        BeerPagedList beerList = beerService.listBeers(beerName, beerStyle,
+                PageRequest.of(pageNumber, pageSize), showInventoryOnHand);
 
         return new ResponseEntity<>(beerList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @GetMapping(path = {"beer/{beerId}"}, produces = {"application/json"})
-    public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId,
-                                               @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand) {
-
+    public @NotNull ResponseEntity<BeerDto> getBeerById(
+            @Nullable @PathVariable("beerId") UUID beerId,
+            @Nullable @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand) {
         log.debug("Get Request for BeerId: " + beerId);
 
         if (showInventoryOnHand == null) {
@@ -86,42 +91,44 @@ public class BeerRestController {
         return new ResponseEntity<>(beerService.findBeerById(beerId, showInventoryOnHand), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('beer.read')")
     @GetMapping(path = {"beerUpc/{upc}"}, produces = {"application/json"})
-    public ResponseEntity<BeerDto> getBeerByUpc(@PathVariable("upc") String upc) {
+    public @NotNull ResponseEntity<BeerDto> getBeerByUpc(@Nullable @PathVariable("upc") String upc) {
         return new ResponseEntity<>(beerService.findBeerByUpc(upc), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('beer.create')")
     @PostMapping(path = "beer")
-    public ResponseEntity saveNewBeer(@Valid @RequestBody BeerDto beerDto) {
-
+    public @NotNull ResponseEntity<Void> saveNewBeer(@NotNull @Valid @RequestBody BeerDto beerDto) {
         BeerDto savedDto = beerService.saveBeer(beerDto);
-
         HttpHeaders httpHeaders = new HttpHeaders();
 
         //todo hostname for uri
         httpHeaders.add("Location", "/api/v1/beer_service/" + savedDto.getId().toString());
 
-        return new ResponseEntity(httpHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
     @PutMapping(path = {"beer/{beerId}"}, produces = {"application/json"})
-    public ResponseEntity updateBeer(@PathVariable("beerId") UUID beerId, @Valid @RequestBody BeerDto beerDto) {
+    public @NotNull ResponseEntity<Void> updateBeer(
+            @NotNull @PathVariable("beerId") UUID beerId,
+            @NotNull @Valid @RequestBody BeerDto beerDto) {
 
         beerService.updateBeer(beerId, beerDto);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('beer.delete')")
     @DeleteMapping({"beer/{beerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBeer(@PathVariable("beerId") UUID beerId) {
+    public void deleteBeer(@Nullable @PathVariable("beerId") UUID beerId) {
         beerService.deleteById(beerId);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<List<String>> badRequestHandler(ConstraintViolationException e) {
+    @NotNull ResponseEntity<List<String>> badRequestHandler(@NotNull ConstraintViolationException e) {
         List<String> errors = new ArrayList<>(e.getConstraintViolations().size());
 
         e.getConstraintViolations().forEach(constraintViolation -> errors.add(
