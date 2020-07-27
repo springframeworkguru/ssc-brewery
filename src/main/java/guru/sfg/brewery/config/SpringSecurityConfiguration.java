@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_ANT_URLS =
@@ -35,7 +35,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         authorize.antMatchers("/h2-console/**").permitAll() //do not use in production!
                                 .antMatchers(PUBLIC_ANT_URLS).permitAll()
                                 .antMatchers(HttpMethod.GET, SECURED_BEER_URLS).hasAnyRole("ADMIN", "USER", "CUSTOMER")
-                                .mvcMatchers(HttpMethod.DELETE, SECURED_BEER_URLS).hasAnyRole("ADMIN")
                                 .mvcMatchers(HttpMethod.GET, SECURED_BREWERIES_URLS).hasAnyRole("ADMIN", "CUSTOMER")
                                 .mvcMatchers(HttpMethod.GET, SECURED_BEER_UPC_URLS).hasAnyRole("ADMIN", "USER", "CUSTOMER"))
                 .authorizeRequests()

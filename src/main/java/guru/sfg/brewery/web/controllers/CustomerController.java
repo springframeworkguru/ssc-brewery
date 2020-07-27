@@ -21,7 +21,6 @@ import guru.sfg.brewery.domain.Customer;
 import guru.sfg.brewery.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +49,7 @@ public class CustomerController {
         return "customers/findCustomers";
     }
 
-    @Secured({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping
     public @NotNull String processFindFormReturnMany(
             @NotNull Customer customer,
