@@ -15,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_ANT_URLS =
-            {"/", "/login", "/beers/find", "/beers*", "/webjars/**", "/resources/**"};
-    public static final String[] PUBLIC_BEER_URLS = {"/api/v1/beer/**"};
-    public static final String[] PUBLIC_BEER_UPC_URLS = {"/api/v1/beerUpc/{upc}"};
+            {"/", "/login", "/beers/find", "/webjars/**", "/resources/**"};
+    public static final String[] SECURED_BEER_URLS = {"/api/v1/beer/**", "/beers*"};
+    public static final String[] SECURED_BEER_UPC_URLS = {"/api/v1/beerUpc/{upc}"};
 
-    public static final String[] PUBLIC_BREWERIES_URLS = {"/brewery/api/v1/breweries", "/brewery/breweries"};
+    public static final String[] SECURED_BREWERIES_URLS = {"/brewery/api/v1/breweries", "/brewery/breweries"};
 
     @Bean
     public @NotNull PasswordEncoder passwordEncoder() {
@@ -32,10 +32,10 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorize ->
                         authorize.antMatchers("/h2-console/**").permitAll() //do not use in production!
                                 .antMatchers(PUBLIC_ANT_URLS).permitAll()
-                                .antMatchers(HttpMethod.GET, PUBLIC_BEER_URLS).permitAll()
-                                .mvcMatchers(HttpMethod.DELETE, PUBLIC_BEER_URLS).hasAnyRole("ADMIN")
-                                .mvcMatchers(HttpMethod.GET, PUBLIC_BREWERIES_URLS).hasAnyRole("ADMIN", "CUSTOMER")
-                                .mvcMatchers(HttpMethod.GET, PUBLIC_BEER_UPC_URLS).permitAll())
+                                .antMatchers(HttpMethod.GET, SECURED_BEER_URLS).hasAnyRole("ADMIN", "USER", "CUSTOMER")
+                                .mvcMatchers(HttpMethod.DELETE, SECURED_BEER_URLS).hasAnyRole("ADMIN")
+                                .mvcMatchers(HttpMethod.GET, SECURED_BREWERIES_URLS).hasAnyRole("ADMIN", "CUSTOMER")
+                                .mvcMatchers(HttpMethod.GET, SECURED_BEER_UPC_URLS).hasAnyRole("ADMIN", "USER", "CUSTOMER"))
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
