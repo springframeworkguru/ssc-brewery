@@ -25,7 +25,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf().ignoringAntMatchers("/h2-console/**", "/api/**")
+                .and()
                 .authorizeRequests(authorize ->
                         authorize.mvcMatchers(PUBLIC_URLS).permitAll()
                                 .mvcMatchers("/h2-console/**").permitAll()) //do not use in production!
