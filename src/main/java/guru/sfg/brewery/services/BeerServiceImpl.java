@@ -25,6 +25,7 @@ import guru.sfg.brewery.web.model.BeerPagedList;
 import guru.sfg.brewery.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -76,7 +77,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerDto findBeerById(UUID beerId, Boolean showInventoryOnHand) {
+    public BeerDto findBeerById(UUID beerId, boolean showInventoryOnHand) {
 
         log.debug("Finding Beer by id: " + beerId);
 
@@ -84,7 +85,7 @@ public class BeerServiceImpl implements BeerService {
 
         if (beerOptional.isPresent()) {
             log.debug("Found BeerId: " + beerId);
-            if(showInventoryOnHand) {
+            if (showInventoryOnHand) {
                 return beerMapper.beerToBeerDto(beerOptional.get());
             } else {
                 return beerMapper.beerToBeerDto(beerOptional.get());
@@ -95,8 +96,12 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerDto saveBeer(BeerDto beerDto) {
-        return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beerDto)));
+    public @NotNull BeerDto saveBeer(@NotNull BeerDto beerDto) {
+        return Optional.of(beerDto)
+                .map(beerMapper::beerDtoToBeer)
+                .map(beerRepository::save)
+                .map(beerMapper::beerToBeerDto)
+                .orElseThrow();
     }
 
     @Override

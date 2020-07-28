@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
-public class BeerControllerIT extends AbstractBaseIT {
+class BeerControllerIT extends AbstractBaseIT {
 
     @Test
     void findBeerWithoutAuthorizedUser() throws Exception {

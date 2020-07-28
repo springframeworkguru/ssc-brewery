@@ -47,6 +47,7 @@ import java.util.UUID;
 @Controller
 public class BeerController {
 
+    private static final String REDIRECT_BEERS = "redirect:/beers/";
     private final BeerRepository beerRepository;
     private final BeerInventoryRepository beerInventoryRepository;
 
@@ -75,7 +76,7 @@ public class BeerController {
         } else if (beerList.size() == 1) {
             // 1 beer found
             beer = beerList.get(0);
-            return "redirect:/beers/" + beer.getId();
+            return REDIRECT_BEERS + beer.getId();
         } else {
             // multiple beers found
             model.addAttribute("selections", beerList);
@@ -113,7 +114,7 @@ public class BeerController {
                 .build();
 
         Beer savedBeer = beerRepository.save(newBeer);
-        return "redirect:/beers/" + savedBeer.getId();
+        return REDIRECT_BEERS + savedBeer.getId();
     }
 
     @PreAuthorizeBeerUpdate
@@ -134,7 +135,7 @@ public class BeerController {
         } else {
             //ToDO: Add Service
             Beer savedBeer = beerRepository.save(beer);
-            return "redirect:/beers/" + savedBeer.getId();
+            return REDIRECT_BEERS + savedBeer.getId();
         }
     }
 

@@ -19,6 +19,7 @@ package guru.sfg.brewery.web.mappers;
 
 import guru.sfg.brewery.domain.Beer;
 import guru.sfg.brewery.web.model.BeerDto;
+import org.jetbrains.annotations.Nullable;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
@@ -26,7 +27,8 @@ import org.mapstruct.Mapper;
 @DecoratedWith(BeerMapperDecorator.class)
 public interface BeerMapper {
 
-    BeerDto beerToBeerDto(Beer beer);
+    @Nullable BeerDto beerToBeerDto(@Nullable Beer beer);
 
-    Beer beerDtoToBeer(BeerDto beerDto);
+    @Nullable Beer beerDtoToBeer(@Nullable BeerDto beerDto);
+
 }

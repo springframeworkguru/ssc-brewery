@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class BeerOrderControllerV2IT extends AbstractBaseIT {
+class BeerOrderControllerV2IT extends AbstractBaseIT {
 
     public static final String API_ROOT = "/api/v2/orders/";
 

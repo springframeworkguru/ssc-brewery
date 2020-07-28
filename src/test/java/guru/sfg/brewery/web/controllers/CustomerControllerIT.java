@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class CustomerControllerIT extends AbstractBaseIT {
+class CustomerControllerIT extends AbstractBaseIT {
 
     private static @NotNull Stream<Arguments> adminAndCustomer() {
         return Stream.of(

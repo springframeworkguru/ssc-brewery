@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class BreweryRestControllerIT extends AbstractBaseIT {
+class BreweryRestControllerIT extends AbstractBaseIT {
 
     private static @NotNull Stream<String> urls() {
         return Stream.of("/brewery/api/v1/breweries", "/brewery/breweries");

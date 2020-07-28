@@ -49,6 +49,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class DefaultBreweryLoader implements CommandLineRunner {
 
+    private static final String PASSWORD = "password";
     public static final String TASTING_ROOM = "Tasting Room";
 
     public static final String ST_PETE_DISTRIBUTING = "St Pete Distributing";
@@ -106,17 +107,17 @@ public class DefaultBreweryLoader implements CommandLineRunner {
 
         //create users
         userRepository.save(User.builder().username(STPETE_USER)
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode(PASSWORD))
                 .customer(stPeteCustomer)
                 .role(customerRole).build());
 
         userRepository.save(User.builder().username(DUNEDIN_USER)
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode(PASSWORD))
                 .customer(dunedinCustomer)
                 .role(customerRole).build());
 
         userRepository.save(User.builder().username(KEYWEST_USER)
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode(PASSWORD))
                 .customer(keyWestCustomer)
                 .role(customerRole).build());
 
@@ -192,7 +193,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
 
         userRepository.save(User.builder()
                 .username("user")
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode(PASSWORD))
                 .role(userRole)
                 .build());
 

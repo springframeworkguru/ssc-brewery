@@ -14,6 +14,7 @@ public class BreweryPasswordEncoderFactories {
         throw new AssertionError("BreweryPasswordEncoderFactories should never be instantiated.");
     }
 
+    @SuppressWarnings("squid:S1874")
     public static @NotNull PasswordEncoder createDelegatingPasswordEncoder() {
         String encodingId = "bcrypt";
         Map<String, PasswordEncoder> encoders = new HashMap<>();

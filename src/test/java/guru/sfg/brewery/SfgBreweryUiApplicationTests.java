@@ -22,11 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class SfgBreweryUiApplicationTests {
+class SfgBreweryUiApplicationTests {
 
+    @SuppressWarnings("squid:S2699")
     @Test
-    public void contextLoads() {
+    void contextLoads() {
     }
 
 }
-

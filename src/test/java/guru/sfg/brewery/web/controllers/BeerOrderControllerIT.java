@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class BeerOrderControllerIT extends AbstractBaseIT {
+class BeerOrderControllerIT extends AbstractBaseIT {
 
     public static final String API_ROOT = "/api/v1/customers/";
 

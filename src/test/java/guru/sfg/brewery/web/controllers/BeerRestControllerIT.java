@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class BeerRestControllerIT extends AbstractBaseIT {
+class BeerRestControllerIT extends AbstractBaseIT {
 
     @Autowired
     BeerRepository beerRepository;
