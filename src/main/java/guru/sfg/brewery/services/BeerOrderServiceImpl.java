@@ -35,6 +35,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -90,7 +91,10 @@ public class BeerOrderServiceImpl implements BeerOrderService {
             beerOrder.setCustomer(customerOptional.get());
             beerOrder.setOrderStatus(OrderStatusEnum.NEW);
 
-            beerOrder.getBeerOrderLines().forEach(line -> line.setBeerOrder(beerOrder));
+            Optional.of(beerOrder)
+                    .map(BeerOrder::getBeerOrderLines)
+                    .orElse(Collections.emptySet())
+                    .forEach(line -> line.setBeerOrder(beerOrder));
 
             BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
 

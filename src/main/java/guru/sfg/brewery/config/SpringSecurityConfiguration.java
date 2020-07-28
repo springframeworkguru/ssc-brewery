@@ -16,7 +16,7 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    public static final String[] PUBLIC_URLS =
+    private static final String[] PUBLIC_URLS =
             {"/", "/login", "/beers/find", "/webjars/**", "/resources/**"};
 
     /**

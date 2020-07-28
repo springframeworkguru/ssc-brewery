@@ -27,6 +27,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public class BeerPagedList extends PageImpl<BeerDto> {
+
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public BeerPagedList(@JsonProperty("content") List<BeerDto> content,
                          @JsonProperty("number") int number,

@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,11 +44,13 @@ public class Customer extends BaseEntity {
 
     @Builder
     public Customer(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerName,
-                    UUID apiKey, Set<BeerOrder> beerOrders) {
+                    UUID apiKey, @Nullable Set<BeerOrder> beerOrders) {
         super(id, version, createdDate, lastModifiedDate);
         this.customerName = customerName;
         this.apiKey = apiKey;
-        this.beerOrders = beerOrders;
+        this.beerOrders = beerOrders == null
+                ? null
+                : new HashSet<>(beerOrders);
     }
 
     private String customerName;
@@ -59,5 +63,29 @@ public class Customer extends BaseEntity {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> users;
+
+    public @Nullable Set<BeerOrder> getBeerOrders() {
+        return beerOrders == null
+                ? null
+                : new HashSet<>(beerOrders);
+    }
+
+    public void setBeerOrders(@Nullable Set<BeerOrder> beerOrders) {
+        this.beerOrders = beerOrders == null
+                ? null
+                : new HashSet<>(beerOrders);
+    }
+
+    public @Nullable Set<User> getUsers() {
+        return users == null
+                ? null
+                : new HashSet<>(users);
+    }
+
+    public void setUsers(@Nullable Set<User> users) {
+        this.users = users == null
+                ? null
+                : new HashSet<>(users);
+    }
 
 }

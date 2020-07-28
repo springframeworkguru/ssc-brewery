@@ -22,12 +22,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -63,4 +65,16 @@ public class BeerOrder extends BaseEntity {
 
     private OrderStatusEnum orderStatus = OrderStatusEnum.NEW;
     private String orderStatusCallbackUrl;
+
+    public @Nullable Set<BeerOrderLine> getBeerOrderLines() {
+        return beerOrderLines == null
+                ? null
+                : new HashSet<>(beerOrderLines);
+    }
+
+    public void setBeerOrderLines(@Nullable Set<BeerOrderLine> beerOrderLines) {
+        this.beerOrderLines = beerOrderLines == null
+                ? null
+                : new HashSet<>(beerOrderLines);
+    }
 }

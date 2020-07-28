@@ -23,6 +23,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -41,8 +42,12 @@ public class BaseEntity {
     public BaseEntity(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate) {
         this.id = id;
         this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
+        this.createdDate = createdDate == null
+                ? null
+                : new Timestamp(createdDate.getTime());
+        this.lastModifiedDate = lastModifiedDate == null
+                ? null
+                : new Timestamp(lastModifiedDate.getTime());
     }
 
     @Id
@@ -51,8 +56,8 @@ public class BaseEntity {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Type(type="org.hibernate.type.UUIDCharType")
-    @Column(length = 36, columnDefinition = "varchar", updatable = false, nullable = false )
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    @Column(length = 36, columnDefinition = "varchar", updatable = false, nullable = false)
     private UUID id;
 
     @Version
@@ -64,6 +69,30 @@ public class BaseEntity {
 
     @UpdateTimestamp
     private Timestamp lastModifiedDate;
+
+    public @Nullable Timestamp getCreatedDate() {
+        return createdDate == null
+                ? null
+                : new Timestamp(createdDate.getTime());
+    }
+
+    public void setCreatedDate(@Nullable Timestamp createdDate) {
+        this.createdDate = createdDate == null
+                ? null
+                : new Timestamp(createdDate.getTime());
+    }
+
+    public @Nullable Timestamp getLastModifiedDate() {
+        return lastModifiedDate == null
+                ? null
+                : new Timestamp(lastModifiedDate.getTime());
+    }
+
+    public void setLastModifiedDate(@Nullable Timestamp lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate == null
+                ? null
+                : new Timestamp(lastModifiedDate.getTime());
+    }
 
     public boolean isNew() {
         return this.id == null;
