@@ -36,8 +36,7 @@
     </tr>
 </table>
 
-<a th:href="@{{id}/edit(id=${beer.id})}" class="btn btn-default">Edit
-    Beer</a>
+<a th:href="@{{id}/edit(id=${beer.id})}" class="btn btn-default">Edit Beer</a>
 
 <br/>
 <br/>
@@ -47,7 +46,7 @@
 <table class="table table-striped">
     <caption>Brewery Inventory</caption>
     <tr th:each="beerInventory : ${beer.beerInventory}">
-        <td valign="top">
+        <td>
             <dl class="dl-horizontal">
                 <dt>Quantity on Hand</dt>
                 <dd th:text="${beerInventory.quantityOnHand}"/>

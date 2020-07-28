@@ -12,10 +12,10 @@
 <table>
     <caption>Breweries</caption>
     <tr>
-        <th>Name</th>
+        <th id="name">Name</th>
     </tr>
     <tr th:each="brewery : ${breweries}">
-        <td id="name" th:text="${brewery.breweryName}">Brewery Name</td>
+        <td id="breweryName" th:text="${brewery.breweryName}">Brewery Name</td>
     </tr>
 </table>
 </body>
