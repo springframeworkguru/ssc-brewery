@@ -14,6 +14,15 @@
 
 <table class="table table-striped" th:object="${beer}">
     <caption>Beer Attributes</caption>
+    <thead>
+    <tr>
+        <th id="name">Name</th>
+        <th id="style">Style</th>
+        <th id="price">Price</th>
+        <th id="minOnHand">Min on Hand</th>
+        <th id="quantity">Quantity to Brew</th>
+    </tr>
+    </thead>
     <tr>
         <th id="name">Name</th>
         <td><strong th:text="*{beerName}"></strong></td>
