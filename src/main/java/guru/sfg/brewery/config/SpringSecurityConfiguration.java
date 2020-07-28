@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +18,16 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_URLS =
             {"/", "/login", "/beers/find", "/webjars/**", "/resources/**"};
+
+    /**
+     * This bean is needed for SPeL.
+     *
+     * @return security evaluation context extension
+     */
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
+    }
 
     @Bean
     public @NotNull PasswordEncoder passwordEncoder() {

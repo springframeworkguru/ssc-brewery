@@ -67,6 +67,18 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         return null;
     }
 
+    @Override
+    public @NotNull BeerOrderPagedList listOrders(@NotNull Pageable pageable) {
+        Page<BeerOrder> beerOrderPage = beerOrderRepository.findAll(pageable);
+
+        return new BeerOrderPagedList(beerOrderPage.stream()
+                .map(beerOrderMapper::beerOrderToDto)
+                .collect(Collectors.toList()), PageRequest.of(
+                beerOrderPage.getPageable().getPageNumber(),
+                beerOrderPage.getPageable().getPageSize()),
+                beerOrderPage.getTotalElements());
+    }
+
     @Transactional
     @Override
     public @Nullable BeerOrderDto placeOrder(@NotNull UUID customerId, @Nullable BeerOrderDto beerOrderDto) {
@@ -103,6 +115,13 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         beerOrder.setOrderStatus(OrderStatusEnum.PICKED_UP);
 
         beerOrderRepository.save(beerOrder);
+    }
+
+    @Override
+    public @Nullable BeerOrderDto getOrderById(@NotNull UUID orderId) {
+        BeerOrder beerOrder = beerOrderRepository.findOrderByIdSecure(orderId);
+
+        return beerOrderMapper.beerOrderToDto(beerOrder);
     }
 
     private @NotNull BeerOrder getOrder(@Nullable UUID customerId, @NotNull UUID orderId) {
