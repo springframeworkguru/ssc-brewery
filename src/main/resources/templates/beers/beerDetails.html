@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
-<head>
-    <title>Beer Details</title>
-</head>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'beers')}"
       lang="en">
+
+<head>
+    <title>Beer Details</title>
+</head>
 
 <body>
 
@@ -37,8 +38,6 @@
 
 <a th:href="@{{id}/edit(id=${beer.id})}" class="btn btn-default">Edit
     Beer</a>
-<!--<a th:href="@{{id}/pets/new(id=${beer.id})}" class="btn btn-default">Delete-->
-<!--Beer</a>-->
 
 <br/>
 <br/>

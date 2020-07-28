@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'customers')}">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'customers')}"
+      lang="en">
+
+<head>
+    <title>Customer List</title>
+</head>
 
 <body>
 
 <h2>Owners</h2>
 
 <table id="vets" class="table table-striped">
+    <caption>Customer List</caption>
     <thead>
     <tr>
-        <th style="width: 150px;">Customer Name</th>
-        <th style="width: 150px;">Registration Date</th>
+        <th id="name" style="width: 150px;">Customer Name</th>
+        <th id="regDate" style="width: 150px;">Registration Date</th>
 
     </tr>
     </thead>

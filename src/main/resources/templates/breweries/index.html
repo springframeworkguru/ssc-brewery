@@ -1,14 +1,21 @@
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'beers')}">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'beers')}"
+      lang="en">
 
+<head>
+    <title>Breweries</title>
+</head>
 
 <body>
 <h1>My Breweries!</h1>
 <table>
+    <caption>Breweries</caption>
     <tr>
         <th>Name</th>
     </tr>
     <tr th:each="brewery : ${breweries}">
-        <td th:text="${brewery.breweryName}">Brewery Name</td>
+        <td id="name" th:text="${brewery.breweryName}">Brewery Name</td>
     </tr>
 </table>
 </body>

@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'beers')}">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'beers')}"
+      lang="en">
+
+<head>
+    <title>Beer List</title>
+</head>
 
 <body>
 
 <h2>Owners</h2>
 
 <table id="vets" class="table table-striped">
+    <caption>Beers</caption>
     <thead>
     <tr>
-        <th style="width: 150px;">Name</th>
-        <th style="width: 200px;">Style</th>
-        <th>Price</th>
-        <th style="width: 120px">Min on Hand</th>
-        <th style="width: 120px">Quantity to Brew</th>
-        <th>Inventory Quantity on Hand</th>
+        <th id="name" style="width: 150px;">Name</th>
+        <th id="style" style="width: 200px;">Style</th>
+        <th id="price">Price</th>
+        <th id="minOnHand" style="width: 120px">Min on Hand</th>
+        <th id="quantity" style="width: 120px">Quantity to Brew</th>
+        <th id="quantityOnHand">Inventory Quantity on Hand</th>
     </tr>
     </thead>
     <tbody>
