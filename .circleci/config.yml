@@ -2,12 +2,11 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:11.0.7-buster
+      - image: 'circleci/openjdk:11-jdk'
 
     working_directory: ~/repo
 
@@ -34,3 +33,5 @@ jobs:
 
       # run tests!
       - run: mvn integration-test
+
+      - run: mvn verify sonar:sonar

@@ -54,6 +54,11 @@
 
 <table class="table table-striped">
     <caption>Brewery Inventory</caption>
+    <thead>
+    <tr>
+        <th id="name">Name</th>
+    </tr>
+    </thead>
     <tr th:each="beerInventory : ${beer.beerInventory}">
         <td>
             <dl class="dl-horizontal">
