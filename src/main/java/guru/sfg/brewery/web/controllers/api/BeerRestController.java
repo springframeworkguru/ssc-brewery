@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/")
