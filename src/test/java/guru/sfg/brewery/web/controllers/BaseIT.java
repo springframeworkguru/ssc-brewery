@@ -9,8 +9,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.stream.Stream;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-
 /**
  * Created by jt on 6/13/20.
  */
@@ -24,7 +22,7 @@ public abstract class BaseIT {
     public void setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)
-                .apply(springSecurity())
+            //    .apply(springSecurity())
                 .build();
     }
 
