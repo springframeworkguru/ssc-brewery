@@ -9,19 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import guru.sfg.brewery.repositories.BeerInventoryRepository;
-import guru.sfg.brewery.repositories.BeerRepository;
-import guru.sfg.brewery.repositories.CustomerRepository;
-import guru.sfg.brewery.services.BeerService;
-import guru.sfg.brewery.services.BreweryService;
 
 /*
  * WebMvcTest behövs bl.a. för att kunna använda WebApplicationContext vilket ger åtkomst
@@ -29,37 +19,9 @@ import guru.sfg.brewery.services.BreweryService;
  */
 
 @WebMvcTest
-public class BeerControllerIT {
+public class BeerControllerIT extends BaseIT{
 
-	@Autowired
-	WebApplicationContext wac;
-	
-	
-	MockMvc mockMvc;
-	
-	
-	/*
-	 * MockBean tells mockito to create a mock of spring-beans in the spring-context
-	 * and injects it in. 
-	 * 
-	 * 
-	 */
-	
-	
-	@MockBean
-	BeerRepository beerRepository;
-	
-	@MockBean
-	BeerInventoryRepository beerInventoryRepository;
-	
-	@MockBean
-	BreweryService breweryService;
-	
-	@MockBean
-	CustomerRepository customerRepository;
-	
-	@MockBean
-	BeerService beerService;
+
 	
 	@BeforeEach
 	void setUp() {
