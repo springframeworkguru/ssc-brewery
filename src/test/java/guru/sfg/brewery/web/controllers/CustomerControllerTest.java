@@ -75,7 +75,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/findCustomers"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoInteractions(customerRepository);
     }
 //ToDO: Fix stubbing error
     @Test
@@ -104,7 +104,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/createCustomer"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoInteractions(customerRepository);
     }
 
     @Test
@@ -124,7 +124,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/createOrUpdateCustomer"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoInteractions(customerRepository);
     }
 
     @Test
