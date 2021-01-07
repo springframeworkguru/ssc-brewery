@@ -44,6 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(admin, user);
+        UserDetails customer = User.withDefaultPasswordEncoder()
+                .username("scott")
+                .password("tiger")
+                .roles("CUSTOMER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, user, customer);
     }
 }
