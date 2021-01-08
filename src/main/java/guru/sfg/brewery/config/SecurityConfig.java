@@ -1,5 +1,7 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.services.security.JpaUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,16 +10,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager){
+    private final JpaUserDetailsService jpaUserDetailsService;
+
+    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
         RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
         return filter;
@@ -29,7 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests(authorize -> {
-            authorize.antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
+            authorize
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
                     .antMatchers("/beers/find", "/beers*").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/beer/**", "/api/v1/beerUpc/**").permitAll();
         })
@@ -40,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
 
         http.csrf().disable();
+
+//        h2 console
+        http.headers().frameOptions().sameOrigin();
     }
 
 //    @Override
@@ -68,20 +77,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("spring")
-                .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla")
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password("{sha256}1296cefceb47413d3fb91ac7586a4625c33937b4d3109f5a4dd96c79c46193a029db713b96006ded")
-                .roles("USER");
-
-        auth.inMemoryAuthentication().withUser("scott").password("{bcrypt10}$2a$10$jv7rEbL65k4Q3d/mqG5MLuLDLTlg5oKoq2QOOojfB3e2awo.nlmgu").roles("CUSTOMER");
+        auth.userDetailsService(this.jpaUserDetailsService).passwordEncoder(passwordEncoder());
     }
+//        auth.inMemoryAuthentication()
+//                .withUser("spring")
+//                .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla")
+//                .roles("ADMIN")
+//                .and()
+//                .withUser("user")
+//                .password("{sha256}1296cefceb47413d3fb91ac7586a4625c33937b4d3109f5a4dd96c79c46193a029db713b96006ded")
+//                .roles("USER");
+//
+//        auth.inMemoryAuthentication().withUser("scott").password("{bcrypt10}$2a$10$jv7rEbL65k4Q3d/mqG5MLuLDLTlg5oKoq2QOOojfB3e2awo.nlmgu").roles("CUSTOMER");
+//    }
+
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
