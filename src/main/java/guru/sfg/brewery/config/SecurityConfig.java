@@ -38,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated().and()
                 .formLogin().and()
                 .httpBasic();
+
+        http.csrf().disable();
     }
 
 //    @Override
@@ -68,18 +70,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("password")
+                .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("password")
+                .password("{sha256}1296cefceb47413d3fb91ac7586a4625c33937b4d3109f5a4dd96c79c46193a029db713b96006ded")
                 .roles("USER");
 
-        auth.inMemoryAuthentication().withUser("scott").password("tiger").roles("CUSTOMER");
+        auth.inMemoryAuthentication().withUser("scott").password("{bcrypt10}$2a$10$jv7rEbL65k4Q3d/mqG5MLuLDLTlg5oKoq2QOOojfB3e2awo.nlmgu").roles("CUSTOMER");
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    PasswordEncoder passwordEncoder(){
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
