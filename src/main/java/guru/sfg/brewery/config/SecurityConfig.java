@@ -31,29 +31,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(restHeaderAuthFilter(authenticationManager()),
-                UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeRequests(authorize -> {
-            authorize
-                    .antMatchers("/h2-console/**").permitAll() //do not use in production!
-                    .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
-                    .antMatchers("/beers/find", "/beers*").hasAnyRole("ADMIN","CUSTOMER", "USER")
-                    .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
-                    .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
-                    .mvcMatchers("/brewery/breweries").hasAnyRole("ADMIN", "CUSTOMER")
-                    .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN", "CUSTOMER");
-        })
+        http
+                .authorizeRequests(authorize -> {
+                    authorize
+                            .antMatchers("/h2-console/**").permitAll() //do not use in production!
+                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
+                } )
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated().and()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin().and()
-                .httpBasic();
+                .httpBasic()
+                .and().csrf().disable();
 
-        http.csrf().disable();
-
-//        h2 console
+        //h2 console config
         http.headers().frameOptions().sameOrigin();
     }
 
