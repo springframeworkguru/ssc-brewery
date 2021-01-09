@@ -24,9 +24,9 @@ public class UserLoader implements CommandLineRunner {
 
     private void loadUserData() {
 
-        Authority a1 = Authority.builder().role("ADMIN").build();
-        Authority a2 = Authority.builder().role("USER").build();
-        Authority a3 = Authority.builder().role("CUSTOMER").build();
+        Authority a1 = Authority.builder().role("ROLE_ADMIN").build();
+        Authority a2 = Authority.builder().role("ROLE_USER").build();
+        Authority a3 = Authority.builder().role("ROLE_CUSTOMER").build();
 
         User user1 = User.builder()
                 .username("spring")
