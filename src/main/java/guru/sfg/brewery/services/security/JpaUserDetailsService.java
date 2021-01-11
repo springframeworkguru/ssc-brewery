@@ -1,7 +1,6 @@
 package guru.sfg.brewery.services.security;
 
 import guru.sfg.brewery.domain.security.Authority;
-import guru.sfg.brewery.domain.security.User;
 import guru.sfg.brewery.repositories.security.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,12 +23,9 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> {
+        return userRepository.findByUsername(username).orElseThrow(() -> {
             return new UsernameNotFoundException("User name: " + username + " not found");
         });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(),
-                user.getAccountNonLocked(), convertToSpringAuthorities(user.getAuthorities()));
     }
 
     private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Set<Authority> authorities) {
