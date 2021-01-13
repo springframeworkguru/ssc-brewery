@@ -10,7 +10,6 @@ import guru.sfg.brewery.repositories.BeerRepository;
 import guru.sfg.brewery.repositories.CustomerRepository;
 import guru.sfg.brewery.web.controllers.BaseIT;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,12 +44,9 @@ class BeerOrderControllerV2Test extends BaseIT {
 
     @BeforeEach
     void setUp() {
-        stPeteCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.ST_PETE_DISTRIBUTING)
-                .orElseThrow();
-        dunedinCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.DUNEDIN_DISTRIBUTING)
-                .orElseThrow();
-        keyWestCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.KEY_WEST_DISTRIBUTORS)
-                .orElseThrow();
+        stPeteCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.ST_PETE_DISTRIBUTING).orElseThrow();
+        dunedinCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.DUNEDIN_DISTRIBUTING).orElseThrow();
+        keyWestCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.KEY_WEST_DISTRIBUTORS).orElseThrow();
         loadedBeers = beerRepository.findAll();
     }
 
@@ -77,9 +73,10 @@ class BeerOrderControllerV2Test extends BaseIT {
     @WithUserDetails(value = DefaultBreweryLoader.DUNEDIN_USER)
     @Test
     void listOrdersCustomerDunedinAuth() throws Exception {
-        mockMvc.perform(get(API_ROOT))
+        mockMvc.perform(get(API_ROOT ))
                 .andExpect(status().isOk());
     }
+
 
     @Transactional
     @Test
@@ -89,7 +86,6 @@ class BeerOrderControllerV2Test extends BaseIT {
         mockMvc.perform(get(API_ROOT + beerOrder.getId()))
                 .andExpect(status().isUnauthorized());
     }
-
 
     @Transactional
     @WithUserDetails("spring")
@@ -118,6 +114,6 @@ class BeerOrderControllerV2Test extends BaseIT {
         BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
 
         mockMvc.perform(get(API_ROOT + beerOrder.getId()))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 }
