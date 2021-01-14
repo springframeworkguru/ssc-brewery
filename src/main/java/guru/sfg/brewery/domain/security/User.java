@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 /**
  * Created by jt on 6/21/20.
  */
-@Entity
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Entity
 public class User implements UserDetails, CredentialsContainer {
 
     @Id
@@ -29,37 +29,26 @@ public class User implements UserDetails, CredentialsContainer {
     private String username;
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Customer customer;
-
     @Singular
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
+        joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+        inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<Role> roles;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Customer customer;
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(Role::getAuthorities)
                 .flatMap(Set::stream)
-                .map(auth -> new SimpleGrantedAuthority(auth.getPermission()))
+                .map(authority -> {
+                    return new SimpleGrantedAuthority(authority.getPermission());
+                })
                 .collect(Collectors.toSet());
     }
-
-    @Builder.Default
-    private Boolean accountNonExpired = true;
-
-    @Builder.Default
-    private Boolean accountNonLocked = true;
-
-    @Builder.Default
-    private Boolean credentialsNonExpired = true;
-
-    @Builder.Default
-    private Boolean enabled = true;
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -80,6 +69,18 @@ public class User implements UserDetails, CredentialsContainer {
     public boolean isEnabled() {
         return this.enabled;
     }
+
+    @Builder.Default
+    private Boolean accountNonExpired = true;
+
+    @Builder.Default
+    private Boolean accountNonLocked = true;
+
+    @Builder.Default
+    private Boolean credentialsNonExpired = true;
+
+    @Builder.Default
+    private Boolean enabled = true;
 
     @Override
     public void eraseCredentials() {

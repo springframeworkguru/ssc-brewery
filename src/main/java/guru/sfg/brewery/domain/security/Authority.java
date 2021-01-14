@@ -8,12 +8,12 @@ import java.util.Set;
 /**
  * Created by jt on 6/21/20.
  */
-@Entity
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Entity
 public class Authority {
 
     @Id
