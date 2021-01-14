@@ -18,6 +18,7 @@
 package guru.sfg.brewery.web.controllers;
 
 import guru.sfg.brewery.domain.Brewery;
+import guru.sfg.brewery.permission.BreweryReadPermission;
 import guru.sfg.brewery.services.BreweryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,14 +37,16 @@ public class BreweryController {
 
     private final BreweryService breweryService;
 
+    @BreweryReadPermission
     @GetMapping({"/breweries", "/breweries/index", "/breweries/index.html", "/breweries.html"})
     public String listBreweries(Model model) {
         model.addAttribute("breweries", breweryService.getAllBreweries());
         return "breweries/index";
     }
+
+    @BreweryReadPermission
     @GetMapping("/api/v1/breweries")
-    public @ResponseBody
-    List<Brewery> getBreweriesJson(){
+    public @ResponseBody List<Brewery> getBreweriesJson(){
         return breweryService.getAllBreweries();
     }
 }
