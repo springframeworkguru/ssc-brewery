@@ -5,34 +5,32 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 class BeerRestControllerIT extends BaseIT {
 
+
     @Test
-    void initCreationForm() throws Exception {
-        mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
-                .andExpect(status().isOk())
-                .andExpect(view().name("beers/createBeer"))
-                .andExpect(model().attributeExists("beer"));
+    void deleteBeer() throws Exception{
+        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+                .header("Api-Key", "user").header("Api-Secret", "password"))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void initCreationFormWithSpring() throws Exception {
-        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "guru")))
-                .andExpect(status().isOk())
-                .andExpect(view().name("beers/createBeer"))
-                .andExpect(model().attributeExists("beer"));
+    void deleteBeerHttpBasic() throws Exception{
+        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+                .with(httpBasic("user", "password")))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    void initCreationFormWithScott() throws Exception {
-        mockMvc.perform(get("/beers/new").with(httpBasic("scott", "Tiger")))
-                .andExpect(status().isOk())
-                .andExpect(view().name("beers/createBeer"))
-                .andExpect(model().attributeExists("beer"));
+    void deleteBeerNoAuth() throws Exception{
+        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
