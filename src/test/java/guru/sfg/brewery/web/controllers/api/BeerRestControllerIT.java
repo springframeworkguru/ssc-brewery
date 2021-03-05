@@ -20,6 +20,22 @@ class BeerRestControllerIT extends BaseIT {
     }
 
     @Test
+    void initCreationFormWithSpring() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "guru")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void initCreationFormWithScott() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("scott", "Tiger")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
     void findBeers() throws Exception {
         mockMvc.perform(get("/api/v1/beer/"))
                 .andExpect(status().isOk());

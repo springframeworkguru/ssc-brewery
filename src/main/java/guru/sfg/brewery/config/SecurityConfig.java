@@ -7,9 +7,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import security.SfgPasswordEncoderFactories;
 
 @Configuration
 @EnableWebSecurity
@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder(){
-        return new StandardPasswordEncoder();
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -41,15 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("b91a6b64397036ab1cf6e4b3c79b4a85569f4af7c5d95c9cbfa18f4e027964d47e89c12b17415416")
+                .password("{ldap}{SSHA}uP8Wmm+RM2LLSoTa12iyxJJJyTVUfBXVxRPdaQ==")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("f48bcfd3399128ef43435a34e57cf86271626ed2cadf92ed1fc13041def350b876769dcd77ddf835")
+                .password("{bcrypt15}$2a$16$Jht9Vp/jGe3XFUznEEclPuCrvCWW9quU9JisQ5LeUHKWdX/vf.aC2")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("f48bcfd3399128ef43435a34e57cf86271626ed2cadf92ed1fc13041def350b876769dcd77ddf835")
+                .password("{sha256}f5b38dfe4769887d64dab186914b70aaf9af7c1bc6a0cd8ce7fee20443b9159eaf207b494c79baca")
                 .roles("CUSTOMER");
     }
 
