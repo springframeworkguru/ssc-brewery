@@ -12,7 +12,7 @@ import static junit.framework.TestCase.assertTrue;
 
 public class PasswordEncodingTests {
 
-    static final String PASSWORD = "password";
+    private static final String PASSWORD = "password";
 
     @Test
     void testBcrypt() {
