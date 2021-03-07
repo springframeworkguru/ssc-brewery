@@ -1,4 +1,4 @@
-package security;
+package guru.sfg.brewery.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;

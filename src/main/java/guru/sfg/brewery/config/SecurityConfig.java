@@ -11,9 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import security.RestHeaderAuthFilter;
-import security.RestUrlParamAuthFilter;
-import security.SfgPasswordEncoderFactories;
+import guru.sfg.brewery.security.RestHeaderAuthFilter;
+import guru.sfg.brewery.security.RestUrlParamAuthFilter;
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 
 @Configuration
 @EnableWebSecurity
