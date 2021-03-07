@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
-import guru.sfg.brewery.security.RestUrlParamAuthFilter;
+import guru.sfg.brewery.security.RestUrlAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 
 @Configuration
@@ -25,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    private RestUrlParamAuthFilter restUrlParamAuthFilter(AuthenticationManager authenticationManager) {
-        RestUrlParamAuthFilter filter = new RestUrlParamAuthFilter(new AntPathRequestMatcher("/api/**"));
+    private RestUrlAuthFilter restUrlParamAuthFilter(AuthenticationManager authenticationManager) {
+        RestUrlAuthFilter filter = new RestUrlAuthFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
