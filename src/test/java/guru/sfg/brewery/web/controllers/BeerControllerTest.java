@@ -21,17 +21,16 @@ import guru.sfg.brewery.domain.Beer;
 import guru.sfg.brewery.repositories.BeerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,34 +44,31 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(BeerController.class)
 class BeerControllerTest {
-    @Mock
+    @MockBean
     BeerRepository beerRepository;
 
-    @InjectMocks
-    BeerController controller;
+    @Autowired
+    MockMvc mockMvc;
+
     List<Beer> beerList;
     UUID uuid;
     Beer beer;
 
-    MockMvc mockMvc;
     Page<Beer> beers;
     Page<Beer> pagedResponse;
 
     @BeforeEach
     void setUp() {
-        beerList = new ArrayList<Beer>();
+        beerList = new ArrayList<>();
         beerList.add(Beer.builder().build());
         beerList.add(Beer.builder().build());
-        pagedResponse = new PageImpl(beerList);
+        pagedResponse = new PageImpl<>(beerList);
 
         final String id = "493410b3-dd0b-4b78-97bf-289f50f6e74f";
         uuid = UUID.fromString(id);
 
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
-                .build();
     }
 
     @Test
@@ -81,7 +77,7 @@ class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
-        verifyZeroInteractions(beerRepository);
+        verifyNoMoreInteractions(beerRepository);
     }
 
     //ToDO: Mocking Page
@@ -96,6 +92,7 @@ class BeerControllerTest {
 
 
     @Test
+    @WithMockUser(username = "MockUser",password = "MockPWD")
     void showBeer() throws Exception{
 
         when(beerRepository.findById(uuid)).thenReturn(Optional.of(Beer.builder().id(uuid).build()));
@@ -106,43 +103,44 @@ class BeerControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "MockUser",password = "MockPWD")
     void initCreationForm() throws Exception {
         mockMvc.perform(get("/beers/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
                 .andExpect(model().attributeExists("beer"));
-        verifyZeroInteractions(beerRepository);
+        verifyNoMoreInteractions(beerRepository);
     }
 
     @Test
+    @WithMockUser(username = "MockUser",password = "MockPWD")
     void processCreationForm() throws Exception {
         when(beerRepository.save(ArgumentMatchers.any())).thenReturn(Beer.builder().id(uuid).build());
         mockMvc.perform(post("/beers/new"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/beers/"+ uuid))
-                .andExpect(model().attributeExists("beer"));
+                .andExpect(view().name("redirect:/beers/"+ uuid));
         verify(beerRepository).save(ArgumentMatchers.any());
     }
 
     @Test
+    @WithMockUser(username = "MockUser",password = "MockPWD")
     void initUpdateBeerForm() throws Exception{
         when(beerRepository.findById(uuid)).thenReturn(Optional.of(Beer.builder().id(uuid).build()));
         mockMvc.perform(get("/beers/"+uuid+"/edit"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createOrUpdateBeer"))
                 .andExpect(model().attributeExists("beer"));
-        verifyZeroInteractions(beerRepository);
+        verify(beerRepository,atMost(2)).findById(any());
     }
 
     @Test
+    @WithMockUser(username = "MockUser",password = "MockPWD")
     void processUpdationForm() throws Exception {
         when(beerRepository.save(ArgumentMatchers.any())).thenReturn(Beer.builder().id(uuid).build());
 
         mockMvc.perform(post("/beers/"+uuid+"/edit"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/beers/"+uuid))
-                .andExpect(model().attributeExists("beer"));
-
+                .andExpect(view().name("redirect:/beers/"+uuid));
         verify(beerRepository).save(ArgumentMatchers.any());
     }
 }
