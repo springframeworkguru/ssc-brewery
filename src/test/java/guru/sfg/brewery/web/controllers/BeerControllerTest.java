@@ -108,7 +108,8 @@ class BeerControllerTest {
         mockMvc.perform(get("/beers/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
-                .andExpect(model().attributeExists("beer"));
+                .andExpect(model().attributeExists("beer"))
+                .andExpect(model().attributeExists("beerStyle"));
         verifyNoMoreInteractions(beerRepository);
     }
 
@@ -129,7 +130,8 @@ class BeerControllerTest {
         mockMvc.perform(get("/beers/"+uuid+"/edit"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createOrUpdateBeer"))
-                .andExpect(model().attributeExists("beer"));
+                .andExpect(model().attributeExists("beer"))
+                .andExpect(model().attributeExists("beerStyle"));
         verify(beerRepository,atMost(2)).findById(any());
     }
 
