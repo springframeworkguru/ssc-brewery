@@ -61,8 +61,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
-        <!--Surefire plugin argLine value to suppress UnresolvedMavenProperty -->
-        <argLine>--illegal-access=permit</argLine>
+
         <!-- Web dependencies -->
         <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
         <webjars-jquery-ui.version>1.12.1</webjars-jquery-ui.version>
@@ -201,6 +200,13 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
+                        </path>
+                        <!-- additional annotation processor required as of Lombok 1.18.16 -->
+                        <!-- recommended in the MapStruct Documentation but seems also to work without!!!! -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
