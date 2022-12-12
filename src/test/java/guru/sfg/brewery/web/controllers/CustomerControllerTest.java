@@ -57,7 +57,7 @@ class CustomerControllerTest {
 
     @BeforeEach
     void setUp() {
-        customerList = new ArrayList<Customer>();
+        customerList = new ArrayList<>();
         customerList.add(Customer.builder().customerName("John Doe").build());
         customerList.add(Customer.builder().customerName("John Doe").build());
 
@@ -75,11 +75,11 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/findCustomers"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoMoreInteractions(customerRepository);
     }
 //ToDO: Fix stubbing error
     @Test
-    @Disabled
+    @Disabled("Fix stubbing error")
     void processFindFormReturnMany() throws Exception{
         when(customerRepository.findAllByCustomerNameLike("John Doe")).thenReturn(customerList);
 
@@ -104,7 +104,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/createCustomer"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoMoreInteractions(customerRepository);
     }
 
     @Test
@@ -124,7 +124,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/createOrUpdateCustomer"))
                 .andExpect(model().attributeExists("customer"));
-        verifyZeroInteractions(customerRepository);
+        verifyNoMoreInteractions(customerRepository);
     }
 
     @Test
