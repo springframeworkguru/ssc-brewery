@@ -22,10 +22,10 @@ jobs:
       - run:
           name: Build
           command: mvn -V -B -DskipTests clean package
-      # Then run your tests!
+      # Then run your unit tests and also the integrations tests!
       - run:
           name: Test
-          command: mvn -V test
+          command: mvn -V verify
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
