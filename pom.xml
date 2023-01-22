@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.8</version>
+        <version>3.0.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -209,7 +209,6 @@
                             <version>${lombok.version}</version>
                         </path>
                         <!-- additional annotation processor required as of Lombok 1.18.16 -->
-                        <!-- recommended in the MapStruct Documentation but seems also to work without!!!! -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
