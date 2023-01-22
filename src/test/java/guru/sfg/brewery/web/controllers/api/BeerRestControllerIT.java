@@ -30,7 +30,7 @@ public class BeerRestControllerIT extends BaseIT {
 
     @Test
     void findBeers() throws Exception{
-        mockMvc.perform(get("/api/v1/beer/"))
+        mockMvc.perform(get("/api/v1/beer"))
                 .andExpect(status().isOk());
     }
 
