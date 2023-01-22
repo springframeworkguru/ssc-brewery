@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -51,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Modified by Pierrot on 2023-01-22.
  */
 @WebMvcTest(BeerController.class)
-@Import({SecurityConfig.class})
+@Import({SecurityConfig.class, H2ConsoleProperties.class})
 class BeerControllerTest {
     @MockBean
     BeerRepository beerRepository;
