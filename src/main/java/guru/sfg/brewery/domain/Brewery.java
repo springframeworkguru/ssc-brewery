@@ -21,12 +21,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 /**
- * Created by jt on 2019-01-26.
+ * Modified by Pierrot on 2023-01-22.
  */
 @Getter
 @Setter

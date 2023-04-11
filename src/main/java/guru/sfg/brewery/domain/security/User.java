@@ -2,11 +2,11 @@ package guru.sfg.brewery.domain.security;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 /**
- * Created by jt on 6/21/20.
+ * Modified by Pierrot on 2023-01-22.
  */
 @Setter
 @Getter
@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name="BEER_USER")
 public class User {
 
     @Id

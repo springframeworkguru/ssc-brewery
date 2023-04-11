@@ -15,7 +15,7 @@
         <input
                 th:replace="~{fragments/inputField :: input ('Beer Name', 'beerName', 'text')}" />
         <input
-                th:replace="~{fragments/selectField :: select ('Style', 'beerStyle', ${T(guru.sfg.brewery.web.model.BeerStyleEnum).values()})}" />
+                th:replace="~{fragments/selectField :: select ('Style', 'beerStyle', ${beerStyle})}" />
         <input
                 th:replace="~{fragments/inputField :: input ('UPC', 'upc', 'number')}" />
         <input

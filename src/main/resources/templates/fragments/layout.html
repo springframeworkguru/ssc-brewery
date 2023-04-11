@@ -44,22 +44,22 @@
                     </a>
                 </li>
 
-                <li th:replace="::menuItem ('/','home','home page','home','Home')">
+                <li th:replace="~{::menuItem ('/','home','home page','home','Home')}">
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                     <span>Home</span>
                 </li>
 
-                <li th:replace="::menuItem ('/customers/find','customers','find customers','search','Customers')">
+                <li th:replace="~{::menuItem ('/customers/find','customers','find customers','search','Customers')}">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     <span>Find Customer</span>
                 </li>
 
-                <li th:replace="::menuItem ('/beers/find','beers','find beers','search','Find beers')">
+                <li th:replace="~{::menuItem ('/beers/find','beers','find beers','search','Find beers')}">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     <span>Find Beer</span>
                 </li>
 
-                <li th:replace="::menuItem ('/brewery/breweries','breweries','breweries','th-list','Breweries')">
+                <li th:replace="~{::menuItem ('/brewery/breweries','breweries','breweries','th-list','Breweries')}">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                     <span>Breweries</span>
                 </li>
@@ -71,7 +71,7 @@
 <div class="container-fluid">
     <div class="container xd-container">
 
-        <th:block th:include="${template}"/>
+        <th:block th:insert="${template}"/>
 
         <br/>
         <br/>
