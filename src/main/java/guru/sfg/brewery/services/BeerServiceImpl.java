@@ -29,12 +29,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,25 +51,25 @@ public class BeerServiceImpl implements BeerService {
         BeerPagedList beerPagedList;
         Page<Beer> beerPage;
 
-        if (!StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
+        if (!ObjectUtils.isEmpty(beerName) && !ObjectUtils.isEmpty(beerStyle)) {
             //search both
             beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
-        } else if (!StringUtils.isEmpty(beerName) && StringUtils.isEmpty(beerStyle)) {
+        } else if (!ObjectUtils.isEmpty(beerName) && ObjectUtils.isEmpty(beerStyle)) {
             //search beer_service name
             beerPage = beerRepository.findAllByBeerName(beerName, pageRequest);
-        } else if (StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
+        } else if (ObjectUtils.isEmpty(beerName) && !ObjectUtils.isEmpty(beerStyle)) {
             //search beer_service style
             beerPage = beerRepository.findAllByBeerStyle(beerStyle, pageRequest);
         } else {
             beerPage = beerRepository.findAll(pageRequest);
         }
 
-        if (showInventoryOnHand) {
+        if (Boolean.TRUE.equals(showInventoryOnHand)) {
             beerPagedList = new BeerPagedList(beerPage
                     .getContent()
                     .stream()
                     .map(beerMapper::beerToBeerDto)
-                    .collect(Collectors.toList()),
+                    .toList(),
                     PageRequest
                             .of(beerPage.getPageable().getPageNumber(),
                                     beerPage.getPageable().getPageSize()),
@@ -81,7 +80,7 @@ public class BeerServiceImpl implements BeerService {
                     .getContent()
                     .stream()
                     .map(beerMapper::beerToBeerDto)
-                    .collect(Collectors.toList()),
+                    .toList(),
                     PageRequest
                             .of(beerPage.getPageable().getPageNumber(),
                                     beerPage.getPageable().getPageSize()),
@@ -99,7 +98,7 @@ public class BeerServiceImpl implements BeerService {
 
         if (beerOptional.isPresent()) {
             log.debug("Found BeerId: " + beerId);
-            if(showInventoryOnHand) {
+            if (showInventoryOnHand) {
                 return beerMapper.beerToBeerDto(beerOptional.get());
             } else {
                 return beerMapper.beerToBeerDto(beerOptional.get());

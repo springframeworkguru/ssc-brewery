@@ -21,11 +21,18 @@ import guru.sfg.brewery.domain.BeerOrderLine;
 import guru.sfg.brewery.web.model.BeerOrderLineDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(uses = {DateMapper.class})
 @DecoratedWith(BeerOrderLineMapperDecorator.class)
 public interface BeerOrderLineMapper {
+
+    @Mapping(target = "beerId", ignore = true)
     BeerOrderLineDto beerOrderLineToDto(BeerOrderLine line);
 
+    @Mapping(target = "beerOrder", ignore = true)
+    @Mapping(target = "beer", ignore = true)
+    @Mapping(target = "quantityAllocated", ignore = true)
     BeerOrderLine dtoToBeerOrderLine(BeerOrderLineDto dto);
+
 }
