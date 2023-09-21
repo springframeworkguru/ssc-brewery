@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+  application:
+    name: spring-security
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: 'false'
+      write-date-timestamps-as-nanoseconds: 'true'
+
+  messages:
+    basename: messages/messages
+
+  security:
+    user:
+      name: grayroom
+      password: secret
+
+logging:
+  level:
+    guru: debug
