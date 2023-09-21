@@ -20,10 +20,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SfgBreweryUiApplication {
+public class SpringSecurityExample {
 
     public static void main(String[] args) {
-        SpringApplication.run(SfgBreweryUiApplication.class, args);
+        SpringApplication.run(SpringSecurityExample.class, args);
     }
 
 }

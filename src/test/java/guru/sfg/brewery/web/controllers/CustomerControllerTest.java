@@ -125,7 +125,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customers/createOrUpdateCustomer"))
                 .andExpect(model().attributeExists("customer"));
-        verifyNoInteractions(customerRepository);
+        verifyNoMoreInteractions(customerRepository);
     }
 
     @Test

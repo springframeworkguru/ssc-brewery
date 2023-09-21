@@ -131,7 +131,7 @@ class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createOrUpdateBeer"))
                 .andExpect(model().attributeExists("beer"));
-        verifyNoInteractions(beerRepository);
+        verifyNoMoreInteractions(beerRepository);
     }
 
     @Test
