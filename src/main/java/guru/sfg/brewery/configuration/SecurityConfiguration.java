@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/beer/**", GET.name())).permitAll()
+                        .mvcMatchers(GET, "/api/v1/beerUpc/{upc}").permitAll()
                 )
                 .authorizeHttpRequests().anyRequest().authenticated()
                 .and()
