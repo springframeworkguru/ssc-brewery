@@ -11,24 +11,38 @@
     <div class="form-group has-feedback">
 
         <input
-                th:replace="~{fragments/inputField :: input ('Beer Name', 'beerName', 'text')}" />
+                th:replace="~{fragments/inputField :: input ('Beer Name', 'beerName', 'text')}"/>
+        <!--        <input-->
+        <!--                th:replace="~{fragments/selectField :: select ('Style', 'beerStyle', ${T(guru.sfg.brewery.web.model.BeerStyleEnum).values()})}" />-->
+        <input>
+        <select name="beerStyle" id="beerStyle">
+            <option value="LAGER">LAGER</option>
+            <option value="PILSNER">PILSNER</option>
+            <option value="GOSE">GOSE</option>
+            <option value="PORTER">PORTER</option>
+            <option value="ALE">ALE</option>
+            <option value="WHEAT">WHEAT</option>
+            <option value="IPA">IPA</option>
+            <option value="PALE_ALE">PALE_ALE</option>
+            <option value="SAISON">SAISON</option>
+        </select>
+        </input>
         <input
-                th:replace="~{fragments/selectField :: select ('Style', 'beerStyle', ${T(guru.sfg.brewery.web.model.BeerStyleEnum).values()})}" />
+                th:replace="~{fragments/inputField :: input ('UPC', 'upc', 'number')}"/>
         <input
-                th:replace="~{fragments/inputField :: input ('UPC', 'upc', 'number')}" />
+                th:replace="~{fragments/inputField :: input ('Min Qty on Hand', 'minOnHand', 'number')}"/>
         <input
-                th:replace="~{fragments/inputField :: input ('Min Qty on Hand', 'minOnHand', 'number')}" />
+                th:replace="~{fragments/inputField :: input ('Qty to Brew', 'quantityToBrew', 'number')}"/>
         <input
-                th:replace="~{fragments/inputField :: input ('Qty to Brew', 'quantityToBrew', 'number')}" />
-        <input
-                th:replace="~{fragments/inputField :: input ('Price', 'price', 'monetory')}" />
+                th:replace="~{fragments/inputField :: input ('Price', 'price', 'monetory')}"/>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button
                     th:with="text=${beer['new']} ? 'Add Beer' : 'Update Beer'"
                     class="btn btn-default" type="submit" th:text="${text}">Add
-                Beer</button>
+                Beer
+            </button>
         </div>
     </div>
 </form>

@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
+        UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("grayroom")
                 .password("secret")
                 .roles("ADMIN")

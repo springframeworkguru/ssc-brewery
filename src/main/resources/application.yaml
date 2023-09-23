@@ -19,10 +19,10 @@ spring:
   messages:
     basename: messages/messages
 
-  security:
-    user:
-      name: grayroom
-      password: secret
+#  security:
+#    user:
+#      name: grayroom
+#      password: secret
 
 logging:
   level:
