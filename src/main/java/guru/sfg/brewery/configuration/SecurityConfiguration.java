@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,13 +65,13 @@ public class SecurityConfiguration {
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("09cdac9e8666ef74dba550869da71a670f14ce3030ffa5cab2afc32af783ccb2c18341f041935e2a")
+                .password("$2a$10$0/.ep6vfZGBOfhQqqeX/iONt3lD.T1knG1dLC33KXuyIvg5IvDfyC")
                 .roles("USER");
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
 }
