@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -63,13 +64,13 @@ public class SecurityConfiguration {
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{SSHA}7FgGINHpzEpuKOBTKtTDLhBpEMTz93Lhyx30cw== ")
+                .password("09cdac9e8666ef74dba550869da71a670f14ce3030ffa5cab2afc32af783ccb2c18341f041935e2a")
                 .roles("USER");
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new LdapShaPasswordEncoder();
+        return new StandardPasswordEncoder();
     }
 
 }
