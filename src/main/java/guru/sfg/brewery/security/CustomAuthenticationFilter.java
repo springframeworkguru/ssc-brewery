@@ -1,10 +1,8 @@
 package guru.sfg.brewery.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.log.LogMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -37,18 +35,41 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        Authentication authenticationResult = attemptAuthentication(request, response);
+        try {
+            Authentication authenticationResult = attemptAuthentication(request, response);
 
-        if (authenticationResult != null) {
-            successfulAuthentication(request, response, chain, authenticationResult);
-        } else {
-            chain.doFilter(request, response);
+            if (authenticationResult != null) {
+                successfulAuthentication(request, response, chain, authenticationResult);
+            } else {
+                chain.doFilter(request, response);
+            }
+        } catch (AuthenticationException e) {
+            log.error("Authentication Failed", e );
+            unsuccessfulAuthentication(request, response, e);
         }
 
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
+
+        SecurityContextHolder.clearContext();
+
+        if (log.isDebugEnabled()) {
+            log.debug("Failed to process authentication request", failed);
+            log.debug("Cleared SecurityContextHolder");
+            log.debug("Handling authentication failure");
+        }
+
+        response.sendError(HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase());
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String userName = getUsername(request);
         String password = getPassword(request);
 
