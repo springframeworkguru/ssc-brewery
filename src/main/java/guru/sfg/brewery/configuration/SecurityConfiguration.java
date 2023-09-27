@@ -38,7 +38,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter) throws Exception {
 
         http.addFilterBefore(customAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class);
+                UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable();
 
         http
                 .authorizeHttpRequests(request -> request

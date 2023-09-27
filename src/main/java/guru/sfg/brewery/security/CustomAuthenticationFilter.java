@@ -39,7 +39,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     }
 
     private String getUsername(HttpServletRequest request) {
-        return request.getHeader("Ape-Key");
+        return request.getHeader("Api-Key");
     }
 
     private String getPassword(HttpServletRequest request) {

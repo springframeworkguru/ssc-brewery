@@ -26,4 +26,9 @@ spring:
 
 logging:
   level:
-    guru: debug
+    guru:
+      sfg:
+        brewery: debug
+    org:
+      springframework:
+        security: debug
