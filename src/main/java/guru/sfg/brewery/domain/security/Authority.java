@@ -1,12 +1,16 @@
 package guru.sfg.brewery.domain.security;
 
-import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Authority {
 
@@ -16,6 +20,8 @@ public class Authority {
 
     String role;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "authorities")
     Set<User> users;
 }
