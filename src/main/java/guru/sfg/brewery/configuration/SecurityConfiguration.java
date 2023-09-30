@@ -38,11 +38,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter) throws Exception {
 
         http.addFilterBefore(customAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class)
+                        UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
 
         http
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
@@ -55,6 +56,10 @@ public class SecurityConfiguration {
                 .formLogin(withDefaults())
                 .logout(withDefaults())
                 .httpBasic(withDefaults());
+
+        //h2 configuration
+        http.headers().frameOptions().sameOrigin();
+
         return http.build();
     }
 
