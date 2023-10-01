@@ -1,17 +1,14 @@
 package guru.sfg.brewery.web.controllers;
 
-import guru.sfg.brewery.configuration.SecurityConfiguration;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
-@Import(SecurityConfiguration.class)
+@SpringBootTest
 class BeerRestControllerIT extends BaseIT {
 
     @Test
@@ -54,9 +51,9 @@ class BeerRestControllerIT extends BaseIT {
     }
 
     @Test
-    void deleteBeerBadCreds() throws Exception{
+    void deleteBeerBadCreds() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                        .header("Api-Key","grayroom").header("Api-Secret", "secretXXXX"))
+                        .header("Api-Key", "grayroom").header("Api-Secret", "secretXXXX"))
                 .andExpect(status().isUnauthorized());
     }
 
