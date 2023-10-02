@@ -18,10 +18,10 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    String role;
+    String permission;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "authorities")
-    Set<User> users;
+    Set<Role> roles;
 }
