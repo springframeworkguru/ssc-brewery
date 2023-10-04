@@ -1,19 +1,16 @@
 package guru.sfg.brewery.configuration;
 
-import guru.sfg.brewery.security.CustomAuthenticationFilter;
 import guru.sfg.brewery.security.CustomEncoderFactories;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -23,27 +20,16 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(AuthenticationManager authenticationManager) {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(new AntPathRequestMatcher("/api/**"));
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
+    PasswordEncoder passwordEncoder() {
+        return CustomEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter) throws Exception {
-
-        http.addFilterBefore(customAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
-
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
@@ -51,21 +37,22 @@ public class SecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/webjars/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/v1/beer/**", GET.name())).permitAll()
-                        .mvcMatchers(GET, "/api/v1/beerUpc/{upc}").permitAll()
+                        .mvcMatchers("/brewery/breweries").hasAnyRole("ADMIN", "CUSTOMER")
+                        .mvcMatchers(GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN", "CUSTOMER")
+                        .mvcMatchers("/beers/find", "beers/{beerId}").hasAnyRole("ADMIN", "CUSTOMER", "USER")
                 )
                 .authorizeHttpRequests().anyRequest().authenticated()
                 .and()
                 .formLogin(withDefaults())
                 .logout(withDefaults())
-                .httpBasic(withDefaults());
+                .httpBasic(withDefaults())
+                .csrf().disable();
 
         //h2 configuration
         http.headers().frameOptions().sameOrigin();
 
         return http.build();
     }
-
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        UserDetails admin = User.withDefaultPasswordEncoder()
@@ -81,8 +68,8 @@ public class SecurityConfiguration {
 //                .build();
 //
 //        return new InMemoryUserDetailsManager(admin, user);
-//    }
 
+//    }
 
 //    @Autowired
 //    public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -100,11 +87,7 @@ public class SecurityConfiguration {
 //                .withUser("scott")
 //                .password("{ldap}{SSHA}9lbt6Ru2e27T935DRXUUWhSzZhnYdBK4zfkzeA==")
 //                .roles("CUSTOMER");
-//    }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return CustomEncoderFactories.createDelegatingPasswordEncoder();
-    }
+//    }
 
 }
