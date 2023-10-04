@@ -55,7 +55,7 @@ public class CustomerControllerIT extends BaseIT {
         void processCreationForm() throws Exception{
             mockMvc.perform(post("/customers/new")
                     .param("customerName", "Foo Customer")
-                    .with(httpBasic("spring", "guru")))
+                    .with(httpBasic("grayroom", "secret")))
                     .andExpect(status().is3xxRedirection());
         }
 

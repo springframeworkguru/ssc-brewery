@@ -32,8 +32,8 @@ public class UserDataLoader implements CommandLineRunner {
 
     private void loadSecurityData() {
         Authority createBeer = authorityRepository.save(Authority.builder().permission("beer.create").build());
-        Authority updateBeer = authorityRepository.save(Authority.builder().permission("beer.update").build());
         Authority readBeer = authorityRepository.save(Authority.builder().permission("beer.read").build());
+        Authority updateBeer = authorityRepository.save(Authority.builder().permission("beer.update").build());
         Authority deleteBeer = authorityRepository.save(Authority.builder().permission("beer.delete").build());
 
         Authority createCustomer = authorityRepository.save(Authority.builder().permission("customer.create").build());
