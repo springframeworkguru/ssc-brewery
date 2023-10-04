@@ -20,6 +20,8 @@ public class Role {
 
     String name;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "roles")
     Set<User> users;
 
@@ -30,4 +32,5 @@ public class Role {
             joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
     Set<Authority> authorities;
+
 }
