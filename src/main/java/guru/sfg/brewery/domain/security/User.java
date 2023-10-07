@@ -2,6 +2,10 @@ package guru.sfg.brewery.domain.security;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,7 +18,7 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails, CredentialsContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,9 +35,6 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     Set<Role> roles;
 
-    @Transient
-    Set<Authority> authorities;
-
     @Builder.Default
     Boolean accountNonExpired = true;
     @Builder.Default
@@ -43,11 +44,37 @@ public class User {
     @Builder.Default
     Boolean enabled = true;
 
-    public Set<Authority> getAuthorities() {
+    @Transient
+    public Set<GrantedAuthority> getAuthorities() {
         return getRoles().stream()
                 .map(Role::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authority -> new SimpleGrantedAuthority(authority.getPermission()))
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return getAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return getAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return getCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getEnabled();
+    }
+
+    @Override
+    public void eraseCredentials() {
+        setPassword(null);
+    }
 }
