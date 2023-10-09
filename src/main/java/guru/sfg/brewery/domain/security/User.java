@@ -31,7 +31,7 @@ public class User implements UserDetails, CredentialsContainer {
     String password;
 
     @Singular
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+    @ManyToMany(cascade = {CascadeType.MERGE},
             fetch = EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
