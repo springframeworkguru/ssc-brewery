@@ -5,6 +5,7 @@ import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,9 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
+    @PreAuthorize("hasAuthority('order.read') " +
+                  "OR hasAuthority('customer.order.read') " +
+                  "AND @customAuthenticationManager.customerIdMatches(authentication, #customerId )")
     @GetMapping("orders")
     public BeerOrderPagedList listOrders(@PathVariable("customerId") UUID customerId,
                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -44,6 +48,9 @@ public class BeerOrderController {
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    @PreAuthorize("hasAuthority('order.read') " +
+                  "OR hasAuthority('customer.order.read') " +
+                  "AND @customAuthenticationManager.customerIdMatches(authentication, #customerId )")
     @GetMapping("orders/{orderId}")
     public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         return beerOrderService.getOrderById(customerId, orderId);
