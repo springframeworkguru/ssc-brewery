@@ -25,7 +25,7 @@ import org.mapstruct.Mapping;
 @Mapper(uses = {DateMapper.class, BeerOrderLineMapper.class})
 public interface BeerOrderMapper {
 
-    @Mapping(target = "customerId", ignore = true)
+    @Mapping(target = "customerId", source = "beerOrder.customer.id")
     BeerOrderDto beerOrderToDto(BeerOrder beerOrder);
 
     @Mapping(target = "customer", ignore = true)

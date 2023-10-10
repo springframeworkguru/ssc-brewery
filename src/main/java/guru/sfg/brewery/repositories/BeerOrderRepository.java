@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.LockModeType;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.UUID;
 /**
  * Created by jt on 2019-01-26.
  */
-public interface BeerOrderRepository  extends JpaRepository<BeerOrder, UUID> {
+public interface BeerOrderRepository extends JpaRepository<BeerOrder, UUID> {
 
     Page<BeerOrder> findAllByCustomer(Customer customer, Pageable pageable);
 
@@ -39,4 +41,14 @@ public interface BeerOrderRepository  extends JpaRepository<BeerOrder, UUID> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     BeerOrder findOneById(UUID id);
+
+    @Query("""
+            select o
+            from BeerOrder o
+            where o.id = :orderId
+            and (:#{hasAuthority('order.read')} = true
+            or o.customer.id = ?#{principal?.customer?.id})
+            """)
+    BeerOrder findOrderByIdSecure(@Param("orderId") UUID orderId);
+
 }
