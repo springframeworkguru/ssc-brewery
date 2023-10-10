@@ -1,19 +1,3 @@
-/*
- *  Copyright 2020 the original author or authors.
- *
- * This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package guru.sfg.brewery.bootstrap;
 
 import guru.sfg.brewery.domain.*;
@@ -117,7 +101,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     }
 
     private BeerOrder createOrder(Customer customer) {
-        return  beerOrderRepository.save(BeerOrder.builder()
+        return beerOrderRepository.save(BeerOrder.builder()
                 .customer(customer)
                 .orderStatus(OrderStatusEnum.NEW)
                 .beerOrderLines(Set.of(BeerOrderLine.builder()
@@ -200,30 +184,35 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     }
 
     private void loadSecurityData() {
+        //beer auths
         Authority createBeer = authorityRepository.save(Authority.builder().permission("beer.create").build());
         Authority readBeer = authorityRepository.save(Authority.builder().permission("beer.read").build());
         Authority updateBeer = authorityRepository.save(Authority.builder().permission("beer.update").build());
         Authority deleteBeer = authorityRepository.save(Authority.builder().permission("beer.delete").build());
 
+        //customer auths
         Authority createCustomer = authorityRepository.save(Authority.builder().permission("customer.create").build());
         Authority readCustomer = authorityRepository.save(Authority.builder().permission("customer.read").build());
         Authority updateCustomer = authorityRepository.save(Authority.builder().permission("customer.update").build());
         Authority deleteCustomer = authorityRepository.save(Authority.builder().permission("customer.delete").build());
 
+        //customer brewery
         Authority createBrewery = authorityRepository.save(Authority.builder().permission("brewery.create").build());
         Authority readBrewery = authorityRepository.save(Authority.builder().permission("brewery.read").build());
         Authority updateBrewery = authorityRepository.save(Authority.builder().permission("brewery.update").build());
         Authority deleteBrewery = authorityRepository.save(Authority.builder().permission("brewery.delete").build());
 
+        //beer order
         Authority createOrder = authorityRepository.save(Authority.builder().permission("order.create").build());
         Authority readOrder = authorityRepository.save(Authority.builder().permission("order.read").build());
         Authority updateOrder = authorityRepository.save(Authority.builder().permission("order.update").build());
         Authority deleteOrder = authorityRepository.save(Authority.builder().permission("order.delete").build());
-
+        Authority pickupOrder = authorityRepository.save(Authority.builder().permission("order.pickup").build());
         Authority createOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.create").build());
         Authority readOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.read").build());
         Authority updateOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.update").build());
         Authority deleteOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.delete").build());
+        Authority pickupOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.pickup").build());
 
         Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
         Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
@@ -231,10 +220,10 @@ public class DefaultBreweryLoader implements CommandLineRunner {
 
         adminRole.setAuthorities(new HashSet<>(Set.of(createBeer, updateBeer, readBeer, deleteBeer, createCustomer, readCustomer,
                 updateCustomer, deleteCustomer, createBrewery, readBrewery, updateBrewery, deleteBrewery,
-                createOrder, readOrder, updateOrder, deleteOrder)));
+                createOrder, readOrder, updateOrder, deleteOrder, pickupOrder)));
 
-        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery,
-                createOrderCustomer, readOrderCustomer, updateOrderCustomer, deleteOrderCustomer)));
+        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery, createOrderCustomer, readOrderCustomer,
+                updateOrderCustomer, deleteOrderCustomer, pickupOrderCustomer)));
 
         userRole.setAuthorities(new HashSet<>(Set.of(readBeer)));
 
