@@ -197,7 +197,7 @@ class BeerOrderControllerTest extends BaseIT {
     }
 
     @Transactional
-    @WithUserDetails("spring")
+    @WithUserDetails("grayroom")
     @Test
     void pickUpOrderAdminUser() throws Exception {
         BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();

@@ -11,6 +11,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize("hasAuthority('order.create') OR " +
         "hasAuthority('customer.order.create') " +
-        " AND @beerOrderAuthenticationManger.customerIdMatches(authentication, #customerId )")
+        " AND @customAuthenticationManager.customerIdMatches(authentication, #customerId )")
 public @interface BeerOrderCreatePermission {
 }

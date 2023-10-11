@@ -11,6 +11,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize("hasAuthority('order.pickup') OR " +
         "hasAuthority('customer.order.pickup') " +
-        " AND @beerOrderAuthenticationManger.customerIdMatches(authentication, #customerId )")
+        " AND @customAuthenticationManager.customerIdMatches(authentication, #customerId )")
 public @interface BeerOrderPickupPermission {
 }

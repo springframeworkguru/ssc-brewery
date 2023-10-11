@@ -49,7 +49,8 @@ public class SecurityConfiguration {
                 .formLogin(withDefaults())
                 .logout(withDefaults())
                 .httpBasic(withDefaults())
-                .csrf().disable();
+                .csrf().ignoringAntMatchers("/h2-console/**",
+                        "/api/**");
 
         //h2 configuration
         http.headers().frameOptions().sameOrigin();

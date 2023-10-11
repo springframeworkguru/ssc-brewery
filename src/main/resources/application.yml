@@ -8,11 +8,11 @@ spring:
       repositories:
         bootstrap-mode: default
 
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 
   application:
     name: spring-security
@@ -38,7 +38,7 @@ logging:
     org:
       springframework:
         security: debug
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace
