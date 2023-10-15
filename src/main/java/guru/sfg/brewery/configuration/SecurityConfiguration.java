@@ -14,6 +14,7 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -46,8 +47,17 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests().anyRequest().authenticated()
                 .and()
-                .formLogin(withDefaults())
-                .logout(withDefaults())
+                .formLogin(loginConfigurer ->
+                        loginConfigurer
+                                .loginProcessingUrl("/login")
+                                .loginPage("/").permitAll()
+                                .successForwardUrl("/")
+                                .defaultSuccessUrl("/"))
+                .logout(logoutConfigurer ->
+                        logoutConfigurer
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", GET.name()))
+                                .logoutSuccessUrl("/").permitAll()
+                )
                 .httpBasic(withDefaults())
                 .csrf().ignoringAntMatchers("/h2-console/**",
                         "/api/**");
