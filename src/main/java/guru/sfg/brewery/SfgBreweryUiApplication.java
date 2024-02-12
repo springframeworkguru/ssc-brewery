@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SfgBreweryUiApplication {
 
+    // this is a comment
     public static void main(String[] args) {
         SpringApplication.run(SfgBreweryUiApplication.class, args);
     }
