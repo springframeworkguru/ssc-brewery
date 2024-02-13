@@ -1,5 +1,6 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,22 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("pass")
+                .password("{sha256}314e2ec7db0cf8e350a838d88898f16aa612b1fc247a1dda72738d52e8f1cddefc4bc9c87dbbc9f3")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("$2a$12$v.kmpizb/FNQSCmQSVtnOO6hQAMPvS6HBULDaF7LK7vK/6KABpa.6")
+                .password("{bcrypt}$2a$12$v.kmpizb/FNQSCmQSVtnOO6hQAMPvS6HBULDaF7LK7vK/6KABpa.6")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("tiger")
+                .password("{pbkdf2}5b77f7195c1b6a00465a65b421ae9b4d71fc869575f8bfae44d1613e9b6d4cf6301433ea34b31b7a")
                 .roles("CUSTOMER");
     }
 
