@@ -2,12 +2,13 @@ package guru.sfg.brewery.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@SpringBootTest
 public class BeerRestControllerIT extends BaseIT{
 
     @Test
@@ -32,7 +33,7 @@ public class BeerRestControllerIT extends BaseIT{
     void deleteBeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
                         .header("Api-key", "spring")
-                        .header("Api-secret", "pass"))
+                        .header("Api-secret", "guru"))
                 .andExpect(status().isOk());
     }
 
@@ -48,7 +49,7 @@ public class BeerRestControllerIT extends BaseIT{
     void deleteBeerUrlAuth() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
                         .param("Api-key", "spring")
-                        .param("Api-secret", "pass"))
+                        .param("Api-secret", "guru"))
                 .andExpect(status().isOk());
     }
 

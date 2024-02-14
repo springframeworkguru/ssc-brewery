@@ -1,8 +1,10 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.JpaUserDetailsService;
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
 import guru.sfg.brewery.security.RestUrlAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -42,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests(authorize -> {
-                    authorize.antMatchers("/", "/webjars/**", "/resources/**").permitAll()
+                    authorize.antMatchers("/h2-console/**").permitAll() // do not use in production!!
+                            .antMatchers("/", "/webjars/**", "/resources/**").permitAll()
                             .antMatchers("/beers/find", "/beers*").permitAll()
                             .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
                             .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll();
@@ -52,6 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().and()
                 .httpBasic();
+
+        // h2 console config
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean
@@ -59,21 +65,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("spring")
-                .password("{sha256}314e2ec7db0cf8e350a838d88898f16aa612b1fc247a1dda72738d52e8f1cddefc4bc9c87dbbc9f3")
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password("{bcrypt}$2a$12$v.kmpizb/FNQSCmQSVtnOO6hQAMPvS6HBULDaF7LK7vK/6KABpa.6")
-                .roles("USER")
-                .and()
-                .withUser("scott")
-                .password("{pbkdf2}5b77f7195c1b6a00465a65b421ae9b4d71fc869575f8bfae44d1613e9b6d4cf6301433ea34b31b7a")
-                .roles("CUSTOMER");
-    }
+//    @Autowired
+//    JpaUserDetailsService jpaUserDetailsService;
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+//        auth.userDetailsService(jpaUserDetailsService).passwordEncoder(passwordEncoder());
+
+//        auth.inMemoryAuthentication()
+//                .withUser("spring")
+//                .password("{sha256}314e2ec7db0cf8e350a838d88898f16aa612b1fc247a1dda72738d52e8f1cddefc4bc9c87dbbc9f3")
+//                .roles("ADMIN")
+//                .and()
+//                .withUser("user")
+//                .password("{bcrypt}$2a$12$v.kmpizb/FNQSCmQSVtnOO6hQAMPvS6HBULDaF7LK7vK/6KABpa.6")
+//                .roles("USER")
+//                .and()
+//                .withUser("scott")
+//                .password("{pbkdf2}5b77f7195c1b6a00465a65b421ae9b4d71fc869575f8bfae44d1613e9b6d4cf6301433ea34b31b7a")
+//                .roles("CUSTOMER");
+//    }
 
     //    @Override
 //    @Bean
