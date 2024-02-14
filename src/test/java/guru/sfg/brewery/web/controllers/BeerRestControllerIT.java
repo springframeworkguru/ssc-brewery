@@ -32,7 +32,31 @@ public class BeerRestControllerIT extends BaseIT{
     void deleteBeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
                         .header("Api-key", "spring")
-                        .header("Api-secret", "guru"))
+                        .header("Api-secret", "pass"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteBeerBadCreds() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
+                        .header("Api-key", "spring")
+                        .header("Api-secret", "bad-pass"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void deleteBeerUrlAuth() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
+                        .param("Api-key", "spring")
+                        .param("Api-secret", "pass"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteBeerUrlAuthBadCreds() throws Exception {
+        mockMvc.perform(delete("/api/v1/beer/f3d5676d-d72b-42a4-9ba8-48f9a151b356")
+                        .param("Api-key", "spring")
+                        .param("Api-secret", "bad-pass"))
+                .andExpect(status().isUnauthorized());
     }
 }
